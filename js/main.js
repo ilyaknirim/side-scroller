@@ -64,6 +64,8 @@ function gameOver() {
     let currentScoreValue = score;
     if (currentGame === 'breakout') {
         currentScoreValue = getCurrentScore();
+    } else if (currentGame === 'dino') {
+        currentScoreValue = getCurrentScoreDino();
     }
 
     // Обновляем лучший результат
@@ -267,6 +269,7 @@ canvas.addEventListener('touchstart', (e) => {
 let touchStartX = 0;
 let touchStartY = 0;
 
+// Отдельный обработчик для игры 2048
 canvas.addEventListener('touchstart', (e) => {
     if (currentGame !== '2048' || gameState !== 'playing') return;
 
@@ -337,7 +340,7 @@ function gameLoop() {
 
 // Импорты функций для каждой игры
 import { initFlappyBird, resetFlappyBird, updateFlappyBird, drawFlappyBird, setGameOver as setGameOverFlappy } from './games/flappyBird.js';
-import { initDinoRun, resetDinoRun, updateDinoRun, drawDinoRun, setGameOver as setGameOverDino } from './games/dinoRun.js';
+import { initDinoRun, resetDinoRun, updateDinoRun, drawDinoRun, setGameOver as setGameOverDino, getCurrentScore as getCurrentScoreDino } from './games/dinoRun.js';
 import { initDoodleJump, resetDoodleJump, updateDoodleJump, drawDoodleJump, setGameOver as setGameOverDoodle, setCurrentGame as setCurrentGameDoodle } from './games/doodleJump.js';
 import { initSnake, resetSnake, updateSnake, drawSnake, setGameOver as setGameOverSnake } from './games/snake.js';
 import { initBreakout, resetBreakout, updateBreakout, drawBreakout, setGameOver as setGameOverBreakout, setCurrentGame as setCurrentGameBreakout, getCurrentScore } from './games/breakout.js';

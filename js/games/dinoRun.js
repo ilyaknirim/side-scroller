@@ -1,6 +1,28 @@
 // Импорт констант и переменных
 import { GAME_WIDTH, GAME_HEIGHT } from '../constants.js';
-import { ctx, score, gameState, scoreElement } from '../main.js';
+import { ctx, gameState, scoreElement } from '../main.js';
+
+// Переменная для хранения счета
+let currentScore = 0;
+
+// Функция для обновления счета
+function updateScore(points = 1) {
+    currentScore += points;
+    scoreElement.textContent = currentScore;
+    return currentScore;
+}
+
+// Функция для сброса счета
+function resetScore() {
+    currentScore = 0;
+    scoreElement.textContent = currentScore;
+    return currentScore;
+}
+
+// Функция для получения текущего счета
+export function getCurrentScore() {
+    return currentScore;
+}
 
 // Функция gameOver будет определена в main.js, но нам нужно объявить ее здесь
 let gameOver;
@@ -18,28 +40,61 @@ export const dino = {
     jumpPower: -12,
 
     draw: function() {
-        ctx.fillStyle = '#538d4e';
-
-        // Тело динозавра
+        // Тело динозавра с градиентом
+        const gradient = ctx.createLinearGradient(this.x, this.y, this.x, this.y + this.height);
+        gradient.addColorStop(0, '#6ba342');
+        gradient.addColorStop(1, '#538d4e');
+        ctx.fillStyle = gradient;
         ctx.fillRect(this.x, this.y, this.width, this.height);
 
-        // Голова
-        ctx.fillRect(this.x + this.width - 15, this.y - 15, 20, 20);
+        // Голова с закругленными углами
+        ctx.fillStyle = '#538d4e';
+        ctx.beginPath();
+        ctx.arc(this.x + this.width - 5, this.y - 5, 15, Math.PI, Math.PI * 1.5);
+        ctx.arc(this.x + this.width - 5, this.y + 15, 15, Math.PI * 1.5, 0);
+        ctx.lineTo(this.x + this.width - 5, this.y);
+        ctx.closePath();
+        ctx.fill();
 
         // Глаза
         ctx.fillStyle = 'white';
-        ctx.fillRect(this.x + this.width - 10, this.y - 10, 5, 5);
+        ctx.beginPath();
+        ctx.arc(this.x + this.width - 8, this.y - 2, 4, 0, Math.PI * 2);
+        ctx.fill();
+        
         ctx.fillStyle = 'black';
-        ctx.fillRect(this.x + this.width - 8, this.y - 8, 2, 2);
+        ctx.beginPath();
+        ctx.arc(this.x + this.width - 6, this.y - 1, 2, 0, Math.PI * 2);
+        ctx.fill();
 
-        // Ноги
+        // Ноги с анимацией
         ctx.fillStyle = '#538d4e';
         const legOffset = Math.floor(Date.now() / 100) % 2 === 0 ? 0 : 5;
-        ctx.fillRect(this.x + 5, this.y + this.height, 8, 15 + legOffset);
-        ctx.fillRect(this.x + 25, this.y + this.height, 8, 15 - legOffset);
+        
+        // Задняя нога
+        ctx.beginPath();
+        ctx.arc(this.x + 10, this.y + this.height + 5, 5, 0, Math.PI, true);
+        ctx.lineTo(this.x + 5, this.y + this.height);
+        ctx.lineTo(this.x + 15, this.y + this.height);
+        ctx.closePath();
+        ctx.fill();
+        
+        // Передняя нога
+        ctx.beginPath();
+        ctx.arc(this.x + 30, this.y + this.height + 5 - legOffset, 5, 0, Math.PI, true);
+        ctx.lineTo(this.x + 25, this.y + this.height);
+        ctx.lineTo(this.x + 35, this.y + this.height);
+        ctx.closePath();
+        ctx.fill();
 
-        // Хвост
-        ctx.fillRect(this.x - 10, this.y + 10, 15, 8);
+        // Хвост с изгибом
+        ctx.fillStyle = '#538d4e';
+        ctx.beginPath();
+        ctx.moveTo(this.x, this.y + 20);
+        ctx.quadraticCurveTo(this.x - 15, this.y + 15, this.x - 10, this.y + 5);
+        ctx.quadraticCurveTo(this.x - 5, this.y, this.x + 5, this.y + 10);
+        ctx.closePath();
+        ctx.fill();
     },
 
     update: function() {
@@ -116,8 +171,7 @@ export const obstacles = {
             // Проверяем, пролетел ли динозавр препятствие
             if (!this.positions[i].passed && this.positions[i].x + this.positions[i].width < dino.x) {
                 this.positions[i].passed = true;
-                score++;
-                scoreElement.textContent = score;
+                updateScore();
             }
 
             // Удаляем препятствия, которые вышли за экран
@@ -129,18 +183,81 @@ export const obstacles = {
     },
 
     draw: function() {
-        ctx.fillStyle = '#8b4513';
-
         for (let i = 0; i < this.positions.length; i++) {
             const obstacle = this.positions[i];
 
-            // Рисуем кактус
-            ctx.fillRect(obstacle.x, obstacle.y, obstacle.width, obstacle.height);
+            // Рисуем кактус с градиентом
+            const gradient = ctx.createLinearGradient(obstacle.x, obstacle.y, obstacle.x, obstacle.y + obstacle.height);
+            gradient.addColorStop(0, '#a0522d');
+            gradient.addColorStop(1, '#8b4513');
+            ctx.fillStyle = gradient;
+            
+            // Основной ствол кактуса
+            ctx.beginPath();
+            ctx.arc(obstacle.x + obstacle.width / 2, obstacle.y + obstacle.height, obstacle.width / 2, 0, Math.PI, true);
+            ctx.lineTo(obstacle.x, obstacle.y);
+            ctx.lineTo(obstacle.x + obstacle.width, obstacle.y);
+            ctx.closePath();
+            ctx.fill();
 
             // Добавляем ветки кактуса
             if (obstacle.width > 25) {
-                ctx.fillRect(obstacle.x - 10, obstacle.y + 10, 10, 15);
-                ctx.fillRect(obstacle.x + obstacle.width, obstacle.y + 15, 10, 15);
+                // Левая ветка
+                ctx.fillStyle = '#8b4513';
+                ctx.beginPath();
+                ctx.arc(obstacle.x - 5, obstacle.y + 10, 5, 0, Math.PI * 2);
+                ctx.fill();
+                
+                // Колючки на левой ветке
+                ctx.strokeStyle = '#654321';
+                ctx.lineWidth = 1;
+                for (let j = 0; j < 5; j++) {
+                    const angle = (Math.PI * 2 / 5) * j;
+                    const x = obstacle.x - 5 + Math.cos(angle) * 8;
+                    const y = obstacle.y + 10 + Math.sin(angle) * 8;
+                    
+                    ctx.beginPath();
+                    ctx.moveTo(obstacle.x - 5, obstacle.y + 10);
+                    ctx.lineTo(x, y);
+                    ctx.stroke();
+                }
+                
+                // Правая ветка
+                ctx.fillStyle = '#8b4513';
+                ctx.beginPath();
+                ctx.arc(obstacle.x + obstacle.width + 5, obstacle.y + 15, 5, 0, Math.PI * 2);
+                ctx.fill();
+                
+                // Колючки на правой ветке
+                ctx.strokeStyle = '#654321';
+                ctx.lineWidth = 1;
+                for (let j = 0; j < 5; j++) {
+                    const angle = (Math.PI * 2 / 5) * j;
+                    const x = obstacle.x + obstacle.width + 5 + Math.cos(angle) * 8;
+                    const y = obstacle.y + 15 + Math.sin(angle) * 8;
+                    
+                    ctx.beginPath();
+                    ctx.moveTo(obstacle.x + obstacle.width + 5, obstacle.y + 15);
+                    ctx.lineTo(x, y);
+                    ctx.stroke();
+                }
+            }
+            
+            // Добавляем колючки на основном стволе
+            ctx.strokeStyle = '#654321';
+            ctx.lineWidth = 1;
+            for (let j = 0; j < obstacle.height; j += 10) {
+                // Левая колючка
+                ctx.beginPath();
+                ctx.moveTo(obstacle.x + obstacle.width / 2, obstacle.y + j);
+                ctx.lineTo(obstacle.x + obstacle.width / 2 - 5, obstacle.y + j - 3);
+                ctx.stroke();
+                
+                // Правая колючка
+                ctx.beginPath();
+                ctx.moveTo(obstacle.x + obstacle.width / 2, obstacle.y + j);
+                ctx.lineTo(obstacle.x + obstacle.width / 2 + 5, obstacle.y + j - 3);
+                ctx.stroke();
             }
         }
     },
@@ -172,12 +289,32 @@ export const ground = {
     offset: 0,
 
     draw: function() {
-        ctx.fillStyle = '#8b4513';
+        // Основная земля с градиентом
+        const groundGradient = ctx.createLinearGradient(0, GAME_HEIGHT - this.height, 0, GAME_HEIGHT);
+        groundGradient.addColorStop(0, '#d2b48c');
+        groundGradient.addColorStop(1, '#8b4513');
+        ctx.fillStyle = groundGradient;
         ctx.fillRect(0, GAME_HEIGHT - this.height, GAME_WIDTH, this.height);
 
-        // Трава
-        ctx.fillStyle = '#228b22';
+        // Трава с градиентом
+        const grassGradient = ctx.createLinearGradient(0, GAME_HEIGHT - this.height, 0, GAME_HEIGHT - this.height + 10);
+        grassGradient.addColorStop(0, '#32cd32');
+        grassGradient.addColorStop(1, '#228b22');
+        ctx.fillStyle = grassGradient;
         ctx.fillRect(0, GAME_HEIGHT - this.height, GAME_WIDTH, 10);
+        
+        // Добавляем травинки
+        ctx.strokeStyle = '#1f5f1f';
+        ctx.lineWidth = 1;
+        for (let i = 0; i < GAME_WIDTH; i += 15) {
+            const grassHeight = 3 + Math.random() * 5;
+            const offset = (i + this.offset * 2) % GAME_WIDTH;
+            
+            ctx.beginPath();
+            ctx.moveTo(offset, GAME_HEIGHT - this.height);
+            ctx.lineTo(offset, GAME_HEIGHT - this.height - grassHeight);
+            ctx.stroke();
+        }
 
         // Линии на земле для создания эффекта движения
         ctx.strokeStyle = '#654321';
@@ -226,8 +363,12 @@ export const background = {
     },
 
     draw: function() {
-        // Небо
-        ctx.fillStyle = '#f7f7f7';
+        // Небо с градиентом
+        const skyGradient = ctx.createLinearGradient(0, 0, 0, GAME_HEIGHT);
+        skyGradient.addColorStop(0, '#87CEEB');  // Светло-голубой
+        skyGradient.addColorStop(0.7, '#98D8E8');  // Более светлый голубой
+        skyGradient.addColorStop(1, '#F0E68C');  // Светло-желтый у горизонта
+        ctx.fillStyle = skyGradient;
         ctx.fillRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
 
         // Облака
@@ -240,10 +381,34 @@ export const background = {
     },
 
     drawCloud: function(x, y, size) {
+        // Рисуем облако с градиентом
+        const cloudGradient = ctx.createRadialGradient(x, y, 0, x, y, size);
+        cloudGradient.addColorStop(0, 'rgba(255, 255, 255, 0.9)');
+        cloudGradient.addColorStop(1, 'rgba(255, 255, 255, 0.4)');
+        ctx.fillStyle = cloudGradient;
+        
+        // Основная часть облака
         ctx.beginPath();
         ctx.arc(x, y, size, 0, Math.PI * 2);
-        ctx.arc(x + size, y, size * 0.8, 0, Math.PI * 2);
-        ctx.arc(x - size, y, size * 0.8, 0, Math.PI * 2);
+        ctx.fill();
+        
+        // Левая часть облака
+        ctx.beginPath();
+        ctx.arc(x - size * 0.7, y + size * 0.2, size * 0.7, 0, Math.PI * 2);
+        ctx.fill();
+        
+        // Правая часть облака
+        ctx.beginPath();
+        ctx.arc(x + size * 0.7, y + size * 0.2, size * 0.7, 0, Math.PI * 2);
+        ctx.fill();
+        
+        // Маленькие детали облака
+        ctx.beginPath();
+        ctx.arc(x - size * 0.4, y - size * 0.3, size * 0.4, 0, Math.PI * 2);
+        ctx.fill();
+        
+        ctx.beginPath();
+        ctx.arc(x + size * 0.4, y - size * 0.2, size * 0.4, 0, Math.PI * 2);
         ctx.fill();
     }
 };
@@ -251,13 +416,21 @@ export const background = {
 // Функции инициализации и обновления игры
 export function initDinoRun() {
     background.init();
+    
+    // Добавляем обработчики касаний для мобильных устройств
+    const canvas = document.getElementById('game-canvas');
+    
+    canvas.addEventListener('touchstart', (e) => {
+        if (gameState !== 'playing') return;
+        e.preventDefault();
+        dino.jump();
+    });
 }
 
 export function resetDinoRun() {
     dino.reset();
     obstacles.reset();
-    score = 0;
-    scoreElement.textContent = score;
+    resetScore();
 }
 
 export function updateDinoRun() {
