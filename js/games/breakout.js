@@ -24,10 +24,7 @@ export const paddle = {
     speed: 8,
 
     draw: function() {
-        ctx.fillStyle = '#16213e';
-        ctx.fillRect(this.x, this.y, this.width, this.height);
-
-        // Добавляем эффект градиента
+        // Добавляем эффект градиента для платформы
         const gradient = ctx.createLinearGradient(this.x, this.y, this.x, this.y + this.height);
         gradient.addColorStop(0, '#1a3a52');
         gradient.addColorStop(1, '#0f1f2e');
@@ -126,6 +123,9 @@ export const ball = {
             // Устанавливаем новую скорость
             this.velocityX = this.speed * Math.sin(bounceAngle);
             this.velocityY = -this.speed * Math.cos(bounceAngle);
+
+            // Предотвращаем многократные столкновения с платформой
+            this.y = paddle.y - this.radius;
         }
 
         // Проверка на падение мяча
@@ -210,6 +210,9 @@ export const bricks = {
     },
 
     update: function() {
+        // Флаг для отслеживания столкновения на текущем кадре
+        let collisionDetected = false;
+
         for (let r = 0; r < this.rows; r++) {
             for (let c = 0; c < this.cols; c++) {
                 const brick = this.positions[r][c];
@@ -222,6 +225,9 @@ export const bricks = {
                         ball.y + ball.radius > brick.y &&
                         ball.y - ball.radius < brick.y + this.height
                     ) {
+                        // Если уже было столкновение на этом кадре, пропускаем
+                        if (collisionDetected) continue;
+
                         // Определяем сторону столкновения
                         const ballCenterX = ball.x;
                         const ballCenterY = ball.y;
@@ -240,6 +246,7 @@ export const bricks = {
 
                         // Убираем кирпич
                         brick.status = 0;
+                        collisionDetected = true;
 
                         // Увеличиваем счет
                         score += 10;
@@ -301,6 +308,12 @@ export const background = {
 
 // Функции инициализации и обновления игры
 export function initBreakout(canvasElement) {
+    // Проверяем наличие canvas
+    if (!canvasElement) {
+        console.error('Canvas element is missing for Breakout game');
+        return;
+    }
+
     // Сохраняем canvas для использования в обработчиках событий
     gameCanvas = canvasElement;
     bricks.init();
@@ -317,6 +330,7 @@ function setupEventListeners() {
     gameCanvas.addEventListener('touchstart', (e) => {
         if (currentGame !== 'breakout' || gameState !== 'playing') return;
 
+        e.preventDefault(); // Предотвращаем стандартное поведение
         touchStartX = e.touches[0].clientX;
     });
 
@@ -338,9 +352,10 @@ function setupEventListeners() {
         touchStartX = touchX;
     });
 
-    gameCanvas.addEventListener('touchend', () => {
+    gameCanvas.addEventListener('touchend', (e) => {
         if (currentGame !== 'breakout' || gameState !== 'playing') return;
 
+        e.preventDefault(); // Предотвращаем стандартное поведение
         paddle.stopMovingLeft();
         paddle.stopMovingRight();
         touchStartX = null;
@@ -354,6 +369,9 @@ export function resetBreakout() {
     bricks.reset();
     score = 0;
     scoreElement.textContent = score;
+
+    // Отрисовываем фон сразу после сброса, чтобы избежать голубого экрана
+    background.draw();
 }
 
 export function updateBreakout() {
