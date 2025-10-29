@@ -1,6 +1,6 @@
 // Импорт констант и переменных
 import { GAME_WIDTH, GAME_HEIGHT } from '../constants.js';
-import { ctx, score, gameState, scoreElement } from '../main.js';
+import { ctx, score, gameState, scoreElement, canvas } from '../main.js';
 
 // Функция gameOver будет определена в main.js, но нам нужно объявить ее здесь
 let gameOver;

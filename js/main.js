@@ -30,7 +30,7 @@ let bestScore = {};
 let animationId = null;
 
 // Экспортируем контекст и элементы для использования в других модулях
-export { ctx, scoreElement };
+export { ctx, scoreElement, canvas };
 
 // Загрузка лучших результатов из localStorage
 function loadBestScores() {
