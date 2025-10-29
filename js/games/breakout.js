@@ -298,6 +298,47 @@ export function initBreakout(canvasElement) {
     // Сохраняем canvas для использования в обработчиках событий
     gameCanvas = canvasElement;
     bricks.init();
+
+    // Настраиваем обработчики событий
+    setupEventListeners();
+}
+
+// Функция для настройки обработчиков событий
+function setupEventListeners() {
+    // Управление касанием для мобильных устройств
+    let touchStartX = null;
+
+    gameCanvas.addEventListener('touchstart', (e) => {
+        if (currentGame !== 'breakout' || gameState !== 'playing') return;
+
+        touchStartX = e.touches[0].clientX;
+    });
+
+    gameCanvas.addEventListener('touchmove', (e) => {
+        if (currentGame !== 'breakout' || gameState !== 'playing' || touchStartX === null) return;
+
+        e.preventDefault();
+
+        const touchX = e.touches[0].clientX;
+        const diffX = touchX - touchStartX;
+
+        // Двигаем платформу в зависимости от движения пальца
+        if (diffX > 10) {
+            paddle.moveRight();
+        } else if (diffX < -10) {
+            paddle.moveLeft();
+        }
+
+        touchStartX = touchX;
+    });
+
+    gameCanvas.addEventListener('touchend', () => {
+        if (currentGame !== 'breakout' || gameState !== 'playing') return;
+
+        paddle.stopMovingLeft();
+        paddle.stopMovingRight();
+        touchStartX = null;
+    });
 }
 
 export function resetBreakout() {
@@ -352,37 +393,4 @@ document.addEventListener('keyup', (e) => {
     }
 });
 
-// Управление касанием для мобильных устройств
-let touchStartX = null;
-
-gameCanvas.addEventListener('touchstart', (e) => {
-    if (currentGame !== 'breakout' || gameState !== 'playing') return;
-
-    touchStartX = e.touches[0].clientX;
-});
-
-gameCanvas.addEventListener('touchmove', (e) => {
-    if (currentGame !== 'breakout' || gameState !== 'playing' || touchStartX === null) return;
-
-    e.preventDefault();
-
-    const touchX = e.touches[0].clientX;
-    const diffX = touchX - touchStartX;
-
-    // Двигаем платформу в зависимости от движения пальца
-    if (diffX > 10) {
-        paddle.moveRight();
-    } else if (diffX < -10) {
-        paddle.moveLeft();
-    }
-
-    touchStartX = touchX;
-});
-
-gameCanvas.addEventListener('touchend', () => {
-    if (currentGame !== 'breakout' || gameState !== 'playing') return;
-
-    paddle.stopMovingLeft();
-    paddle.stopMovingRight();
-    touchStartX = null;
-});
+// Обработчики событий добавлены в setupEventListeners()

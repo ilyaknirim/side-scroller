@@ -272,6 +272,53 @@ export const background = {
 export function initDoodleJump(canvasElement) {
     // Сохраняем canvas для использования в обработчиках событий
     gameCanvas = canvasElement;
+
+    // Настраиваем обработчики событий
+    setupEventListeners();
+}
+
+// Функция для настройки обработчиков событий
+function setupEventListeners() {
+    // Обработчики касаний для управления Doodle
+    gameCanvas.addEventListener('touchmove', (e) => {
+        if (currentGame !== 'doodle' || gameState !== 'playing') return;
+
+        const rect = gameCanvas.getBoundingClientRect();
+        const touchX = e.touches[0].clientX - rect.left;
+        const canvasWidth = rect.width;
+
+        // Определяем направление движения в зависимости от позиции касания
+        if (touchX < canvasWidth / 2) {
+            doodle.moveLeft();
+        } else {
+            doodle.moveRight();
+        }
+    });
+
+    gameCanvas.addEventListener('touchend', () => {
+        if (currentGame !== 'doodle' || gameState !== 'playing') return;
+
+        doodle.stopMoving();
+    });
+
+    // Для управления с клавиатуры
+    document.addEventListener('keydown', (e) => {
+        if (currentGame !== 'doodle' || gameState !== 'playing') return;
+
+        if (e.code === 'ArrowLeft') {
+            doodle.moveLeft();
+        } else if (e.code === 'ArrowRight') {
+            doodle.moveRight();
+        }
+    });
+
+    document.addEventListener('keyup', (e) => {
+        if (currentGame !== 'doodle' || gameState !== 'playing') return;
+
+        if (e.code === 'ArrowLeft' || e.code === 'ArrowRight') {
+            doodle.stopMoving();
+        }
+    });
 }
 
 export function resetDoodleJump() {
@@ -299,43 +346,4 @@ export function drawDoodleJump() {
     doodle.draw();
 }
 
-// Обработчики касаний для управления Doodle
-gameCanvas.addEventListener('touchmove', (e) => {
-    if (currentGame !== 'doodle' || gameState !== 'playing') return;
-
-    const rect = gameCanvas.getBoundingClientRect();
-    const touchX = e.touches[0].clientX - rect.left;
-    const canvasWidth = rect.width;
-
-    // Определяем направление движения в зависимости от позиции касания
-    if (touchX < canvasWidth / 2) {
-        doodle.moveLeft();
-    } else {
-        doodle.moveRight();
-    }
-});
-
-gameCanvas.addEventListener('touchend', () => {
-    if (currentGame !== 'doodle' || gameState !== 'playing') return;
-
-    doodle.stopMoving();
-});
-
-// Для управления с клавиатуры
-document.addEventListener('keydown', (e) => {
-    if (currentGame !== 'doodle' || gameState !== 'playing') return;
-
-    if (e.code === 'ArrowLeft') {
-        doodle.moveLeft();
-    } else if (e.code === 'ArrowRight') {
-        doodle.moveRight();
-    }
-});
-
-document.addEventListener('keyup', (e) => {
-    if (currentGame !== 'doodle' || gameState !== 'playing') return;
-
-    if (e.code === 'ArrowLeft' || e.code === 'ArrowRight') {
-        doodle.stopMoving();
-    }
-});
+// Обработчики событий добавлены в setupEventListeners()
