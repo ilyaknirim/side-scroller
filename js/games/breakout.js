@@ -5,9 +5,15 @@ import { ctx, score, gameState, scoreElement } from '../main.js';
 // Глобальная переменная для canvas
 let gameCanvas;
 
+// Объявляем currentGame, так как он импортируется динамически
+let currentGame;
+
 // Функция gameOver будет определена в main.js, но нам нужно объявить ее здесь
 let gameOver;
 export function setGameOver(fn) { gameOver = fn; }
+
+// Функция для установки currentGame
+export function setCurrentGame(game) { currentGame = game; }
 
 // Платформа
 export const paddle = {

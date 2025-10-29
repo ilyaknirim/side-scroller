@@ -2,12 +2,18 @@
 import { GAME_WIDTH, GAME_HEIGHT } from '../constants.js';
 import { ctx, score, gameState, scoreElement } from '../main.js';
 
+// Объявляем currentGame, так как он импортируется динамически
+let currentGame;
+
 // Глобальная переменная для canvas
 let gameCanvas;
 
 // Функция gameOver будет определена в main.js, но нам нужно объявить ее здесь
 let gameOver;
 export function setGameOver(fn) { gameOver = fn; }
+
+// Функция для установки currentGame
+export function setCurrentGame(game) { currentGame = game; }
 
 // Персонаж Doodle
 export const doodle = {

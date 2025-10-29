@@ -122,6 +122,7 @@ function startGame(gameType) {
             overlayTitle.textContent = 'Doodle Jump';
             overlayMessage.textContent = 'Нажмите, чтобы начать';
             setGameOverDoodle(gameOver);
+            setCurrentGameDoodle('doodle');
             initDoodleJump(canvas);
             break;
         case 'snake':
@@ -134,12 +135,14 @@ function startGame(gameType) {
             overlayTitle.textContent = 'Breakout';
             overlayMessage.textContent = 'Нажмите, чтобы начать';
             setGameOverBreakout(gameOver);
+            setCurrentGameBreakout('breakout');
             initBreakout(canvas);
             break;
         case '2048':
             overlayTitle.textContent = '2048';
             overlayMessage.textContent = 'Сдвиньте плитки, чтобы начать';
             setGameOver2048(gameOver);
+            setCurrentGame2048('2048');
             init2048(canvas);
             break;
     }
@@ -329,7 +332,7 @@ function gameLoop() {
 // Импорты функций для каждой игры
 import { initFlappyBird, resetFlappyBird, updateFlappyBird, drawFlappyBird, setGameOver as setGameOverFlappy } from './games/flappyBird.js';
 import { initDinoRun, resetDinoRun, updateDinoRun, drawDinoRun, setGameOver as setGameOverDino } from './games/dinoRun.js';
-import { initDoodleJump, resetDoodleJump, updateDoodleJump, drawDoodleJump, setGameOver as setGameOverDoodle } from './games/doodleJump.js';
+import { initDoodleJump, resetDoodleJump, updateDoodleJump, drawDoodleJump, setGameOver as setGameOverDoodle, setCurrentGame as setCurrentGameDoodle } from './games/doodleJump.js';
 import { initSnake, resetSnake, updateSnake, drawSnake, setGameOver as setGameOverSnake } from './games/snake.js';
-import { initBreakout, resetBreakout, updateBreakout, drawBreakout, setGameOver as setGameOverBreakout } from './games/breakout.js';
-import { init2048, reset2048, draw2048, move2048, setGameOver as setGameOver2048 } from './games/game2048.js';
+import { initBreakout, resetBreakout, updateBreakout, drawBreakout, setGameOver as setGameOverBreakout, setCurrentGame as setCurrentGameBreakout } from './games/breakout.js';
+import { init2048, reset2048, draw2048, move2048, setGameOver as setGameOver2048, setCurrentGame as setCurrentGame2048 } from './games/game2048.js';
