@@ -100,12 +100,20 @@ export const ball = {
         this.y += this.velocityY;
 
         // Столкновение со стенами
-        if (this.x + this.radius > GAME_WIDTH || this.x - this.radius < 0) {
+        if (this.x + this.radius > GAME_WIDTH) {
             this.velocityX = -this.velocityX;
+            // Корректируем позицию мяча, чтобы избежать застревания
+            this.x = GAME_WIDTH - this.radius;
+        } else if (this.x - this.radius < 0) {
+            this.velocityX = -this.velocityX;
+            // Корректируем позицию мяча, чтобы избежать застревания
+            this.x = this.radius;
         }
 
         if (this.y - this.radius < 0) {
             this.velocityY = -this.velocityY;
+            // Корректируем позицию мяча, чтобы избежать застревания
+            this.y = this.radius;
         }
 
         // Столкновение с платформой
@@ -113,7 +121,8 @@ export const ball = {
             this.y + this.radius > paddle.y &&
             this.y - this.radius < paddle.y + paddle.height &&
             this.x > paddle.x &&
-            this.x < paddle.x + paddle.width
+            this.x < paddle.x + paddle.width &&
+            this.velocityY > 0 // Проверяем, что мяч движется вниз
         ) {
             // Вычисляем угол отскока в зависимости от точки попадания на платформу
             const collidePoint = this.x - (paddle.x + paddle.width / 2);
@@ -240,8 +249,20 @@ export const bricks = {
                         // Изменяем направление мяча в зависимости от стороны столкновения
                         if (Math.abs(diffX) > Math.abs(diffY)) {
                             ball.velocityX = -ball.velocityX;
+                            // Корректируем позицию мяча, чтобы избежать застревания
+                            if (diffX > 0) {
+                                ball.x = brick.x + this.width + ball.radius;
+                            } else {
+                                ball.x = brick.x - ball.radius;
+                            }
                         } else {
                             ball.velocityY = -ball.velocityY;
+                            // Корректируем позицию мяча, чтобы избежать застревания
+                            if (diffY > 0) {
+                                ball.y = brick.y + this.height + ball.radius;
+                            } else {
+                                ball.y = brick.y - ball.radius;
+                            }
                         }
 
                         // Убираем кирпич
@@ -376,24 +397,43 @@ export function resetBreakout() {
 
 export function updateBreakout() {
     if (gameState === 'playing') {
-        paddle.update();
-        ball.update();
-        bricks.update();
+        // Обновляем платформу, если она существует
+        if (paddle && typeof paddle.update === 'function') {
+            paddle.update();
+        }
+        
+        // Обновляем мяч, если он существует
+        if (ball && typeof ball.update === 'function') {
+            ball.update();
+        }
+        
+        // Обновляем кирпичи, если они существуют
+        if (bricks && typeof bricks.update === 'function') {
+            bricks.update();
+        }
     }
 }
 
 export function drawBreakout() {
     // Отрисовка фона
-    background.draw();
+    if (background && typeof background.draw === 'function') {
+        background.draw();
+    }
 
     // Отрисовка кирпичей
-    bricks.draw();
+    if (bricks && typeof bricks.draw === 'function') {
+        bricks.draw();
+    }
 
     // Отрисовка платформы
-    paddle.draw();
+    if (paddle && typeof paddle.draw === 'function') {
+        paddle.draw();
+    }
 
     // Отрисовка мяча
-    ball.draw();
+    if (ball && typeof ball.draw === 'function') {
+        ball.draw();
+    }
 }
 
 // Обработчики управления для Breakout
