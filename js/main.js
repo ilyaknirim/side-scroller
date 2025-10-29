@@ -122,7 +122,7 @@ function startGame(gameType) {
             overlayTitle.textContent = 'Doodle Jump';
             overlayMessage.textContent = 'Нажмите, чтобы начать';
             setGameOverDoodle(gameOver);
-            initDoodleJump();
+            initDoodleJump(canvas);
             break;
         case 'snake':
             overlayTitle.textContent = 'Snake';
@@ -134,13 +134,13 @@ function startGame(gameType) {
             overlayTitle.textContent = 'Breakout';
             overlayMessage.textContent = 'Нажмите, чтобы начать';
             setGameOverBreakout(gameOver);
-            initBreakout();
+            initBreakout(canvas);
             break;
         case '2048':
             overlayTitle.textContent = '2048';
             overlayMessage.textContent = 'Сдвиньте плитки, чтобы начать';
             setGameOver2048(gameOver);
-            init2048();
+            init2048(canvas);
             break;
     }
 

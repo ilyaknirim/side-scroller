@@ -1,6 +1,9 @@
 // Импорт констант и переменных
 import { GAME_WIDTH, GAME_HEIGHT } from '../constants.js';
-import { ctx, score, gameState, scoreElement, canvas } from '../main.js';
+import { ctx, score, gameState, scoreElement } from '../main.js';
+
+// Глобальная переменная для canvas
+let gameCanvas;
 
 // Функция gameOver будет определена в main.js, но нам нужно объявить ее здесь
 let gameOver;
@@ -291,7 +294,9 @@ export const background = {
 };
 
 // Функции инициализации и обновления игры
-export function initBreakout() {
+export function initBreakout(canvasElement) {
+    // Сохраняем canvas для использования в обработчиках событий
+    gameCanvas = canvasElement;
     bricks.init();
 }
 
@@ -350,13 +355,13 @@ document.addEventListener('keyup', (e) => {
 // Управление касанием для мобильных устройств
 let touchStartX = null;
 
-canvas.addEventListener('touchstart', (e) => {
+gameCanvas.addEventListener('touchstart', (e) => {
     if (currentGame !== 'breakout' || gameState !== 'playing') return;
 
     touchStartX = e.touches[0].clientX;
 });
 
-canvas.addEventListener('touchmove', (e) => {
+gameCanvas.addEventListener('touchmove', (e) => {
     if (currentGame !== 'breakout' || gameState !== 'playing' || touchStartX === null) return;
 
     e.preventDefault();
@@ -374,7 +379,7 @@ canvas.addEventListener('touchmove', (e) => {
     touchStartX = touchX;
 });
 
-canvas.addEventListener('touchend', () => {
+gameCanvas.addEventListener('touchend', () => {
     if (currentGame !== 'breakout' || gameState !== 'playing') return;
 
     paddle.stopMovingLeft();

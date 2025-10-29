@@ -1,6 +1,9 @@
 // Импорт констант и переменных
 import { GAME_WIDTH, GAME_HEIGHT } from '../constants.js';
-import { ctx, score, gameState, scoreElement, canvas } from '../main.js';
+import { ctx, score, gameState, scoreElement } from '../main.js';
+
+// Глобальная переменная для canvas
+let gameCanvas;
 
 // Функция gameOver будет определена в main.js, но нам нужно объявить ее здесь
 let gameOver;
@@ -266,8 +269,9 @@ export const background = {
 };
 
 // Функции инициализации и обновления игры
-export function initDoodleJump() {
-    // Инициализация при необходимости
+export function initDoodleJump(canvasElement) {
+    // Сохраняем canvas для использования в обработчиках событий
+    gameCanvas = canvasElement;
 }
 
 export function resetDoodleJump() {
@@ -296,10 +300,10 @@ export function drawDoodleJump() {
 }
 
 // Обработчики касаний для управления Doodle
-canvas.addEventListener('touchmove', (e) => {
+gameCanvas.addEventListener('touchmove', (e) => {
     if (currentGame !== 'doodle' || gameState !== 'playing') return;
 
-    const rect = canvas.getBoundingClientRect();
+    const rect = gameCanvas.getBoundingClientRect();
     const touchX = e.touches[0].clientX - rect.left;
     const canvasWidth = rect.width;
 
@@ -311,7 +315,7 @@ canvas.addEventListener('touchmove', (e) => {
     }
 });
 
-canvas.addEventListener('touchend', () => {
+gameCanvas.addEventListener('touchend', () => {
     if (currentGame !== 'doodle' || gameState !== 'playing') return;
 
     doodle.stopMoving();

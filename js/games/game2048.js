@@ -1,6 +1,9 @@
 // Импорт констант и переменных
 import { GAME_WIDTH, GAME_HEIGHT } from '../constants.js';
-import { ctx, score, gameState, scoreElement, canvas } from '../main.js';
+import { ctx, score, gameState, scoreElement } from '../main.js';
+
+// Глобальная переменная для canvas
+let gameCanvas;
 
 // Функция gameOver будет определена в main.js, но нам нужно объявить ее здесь
 let gameOver;
@@ -317,8 +320,52 @@ export const grid = {
 };
 
 // Функции для управления игрой
-export function init2048() {
+export function init2048(canvasElement) {
+    // Сохраняем canvas для использования в обработчиках событий
+    gameCanvas = canvasElement;
     grid.init();
+
+    // Добавляем обработчики событий для игры 2048
+    setupEventListeners();
+}
+
+// Функция для настройки обработчиков событий
+function setupEventListeners() {
+    // Для игры 2048 добавим обработчики свайпов
+    let touchStartX = 0;
+    let touchStartY = 0;
+
+    gameCanvas.addEventListener('touchstart', (e) => {
+        if (currentGame !== '2048' || gameState !== 'playing') return;
+
+        touchStartX = e.touches[0].clientX;
+        touchStartY = e.touches[0].clientY;
+    });
+
+    gameCanvas.addEventListener('touchend', (e) => {
+        if (currentGame !== '2048' || gameState !== 'playing') return;
+
+        const touchEndX = e.changedTouches[0].clientX;
+        const touchEndY = e.changedTouches[0].clientY;
+
+        const dx = touchEndX - touchStartX;
+        const dy = touchEndY - touchStartY;
+
+        // Определяем направление свайпа
+        if (Math.abs(dx) > Math.abs(dy)) {
+            if (dx > 0) {
+                move2048('right');
+            } else {
+                move2048('left');
+            }
+        } else {
+            if (dy > 0) {
+                move2048('down');
+            } else {
+                move2048('up');
+            }
+        }
+    });
 }
 
 export function reset2048() {
