@@ -41,14 +41,18 @@ function loadBestScores() {
         // Инициализация результатов для всех игр
         bestScore = {
             flappy: 0,
-            dino: 0,
+            dinoGame: 0,
             doodle: 0,
             snake: 0,
             breakout: 0,
             '2048': 0
         };
     }
-    bestScoreElement.textContent = bestScore[currentGame] || 0;
+    if (currentGame === 'dino') {
+        bestScoreElement.textContent = bestScore.dinoGame || 0;
+    } else {
+        bestScoreElement.textContent = bestScore[currentGame] || 0;
+    }
 }
 
 // Сохранение лучших результатов в localStorage
@@ -69,10 +73,18 @@ function gameOver() {
     }
 
     // Обновляем лучший результат
-    if (currentScoreValue > bestScore[currentGame]) {
-        bestScore[currentGame] = currentScoreValue;
-        saveBestScores();
-        bestScoreElement.textContent = bestScore[currentGame];
+    if (currentGame === 'dino') {
+        if (currentScoreValue > bestScore.dinoGame) {
+            bestScore.dinoGame = currentScoreValue;
+            saveBestScores();
+            bestScoreElement.textContent = bestScore.dinoGame;
+        }
+    } else {
+        if (currentScoreValue > bestScore[currentGame]) {
+            bestScore[currentGame] = currentScoreValue;
+            saveBestScores();
+            bestScoreElement.textContent = bestScore[currentGame];
+        }
     }
 
     overlayTitle.textContent = 'Игра окончена!';
@@ -340,7 +352,7 @@ function gameLoop() {
 
 // Импорты функций для каждой игры
 import { initFlappyBird, resetFlappyBird, updateFlappyBird, drawFlappyBird, setGameOver as setGameOverFlappy } from './games/flappyBird.js';
-import { initDinoRun, resetDinoRun, updateDinoRun, drawDinoRun, setGameOver as setGameOverDino, getCurrentScore as getCurrentScoreDino } from './games/dinoRun.js';
+import { initDinoRun, resetDinoRun, updateDinoRun, drawDinoRun, setGameOver as setGameOverDino, getCurrentScore as getCurrentScoreDino, dino } from './games/dinoRun.js';
 import { initDoodleJump, resetDoodleJump, updateDoodleJump, drawDoodleJump, setGameOver as setGameOverDoodle, setCurrentGame as setCurrentGameDoodle } from './games/doodleJump.js';
 import { initSnake, resetSnake, updateSnake, drawSnake, setGameOver as setGameOverSnake } from './games/snake.js';
 import { initBreakout, resetBreakout, updateBreakout, drawBreakout, setGameOver as setGameOverBreakout, setCurrentGame as setCurrentGameBreakout, getCurrentScore } from './games/breakout.js';
