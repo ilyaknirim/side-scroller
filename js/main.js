@@ -1,3 +1,6 @@
+// Импорт констант
+import { GAME_WIDTH, GAME_HEIGHT } from './constants.js';
+
 // Инициализация Telegram WebApp
 let tg = window.Telegram.WebApp;
 tg.expand();
@@ -15,20 +18,19 @@ const overlayTitle = document.getElementById('overlay-title');
 const overlayMessage = document.getElementById('overlay-message');
 const startButton = document.getElementById('start-button');
 
-// Размеры игры
-const GAME_WIDTH = 320;
-const GAME_HEIGHT = 480;
-
 // Установка размеров canvas
 canvas.width = GAME_WIDTH;
 canvas.height = GAME_HEIGHT;
 
 // Игровые переменные
 let currentGame = null;
-let gameState = 'start'; // start, playing, gameover
-let score = 0;
+export let gameState = 'start'; // start, playing, gameover
+export let score = 0;
 let bestScore = {};
 let animationId = null;
+
+// Экспортируем контекст и элементы для использования в других модулях
+export { ctx, scoreElement };
 
 // Загрузка лучших результатов из localStorage
 function loadBestScores() {
@@ -107,31 +109,37 @@ function startGame(gameType) {
         case 'flappy':
             overlayTitle.textContent = 'Flappy Bird';
             overlayMessage.textContent = 'Нажмите, чтобы начать';
+            setGameOverFlappy(gameOver);
             initFlappyBird();
             break;
         case 'dino':
             overlayTitle.textContent = 'Dino Run';
             overlayMessage.textContent = 'Нажмите, чтобы начать';
+            setGameOverDino(gameOver);
             initDinoRun();
             break;
         case 'doodle':
             overlayTitle.textContent = 'Doodle Jump';
             overlayMessage.textContent = 'Нажмите, чтобы начать';
+            setGameOverDoodle(gameOver);
             initDoodleJump();
             break;
         case 'snake':
             overlayTitle.textContent = 'Snake';
             overlayMessage.textContent = 'Нажмите, чтобы начать';
+            setGameOverSnake(gameOver);
             initSnake();
             break;
         case 'breakout':
             overlayTitle.textContent = 'Breakout';
             overlayMessage.textContent = 'Нажмите, чтобы начать';
+            setGameOverBreakout(gameOver);
             initBreakout();
             break;
         case '2048':
             overlayTitle.textContent = '2048';
             overlayMessage.textContent = 'Сдвиньте плитки, чтобы начать';
+            setGameOver2048(gameOver);
             init2048();
             break;
     }
@@ -319,9 +327,9 @@ function gameLoop() {
 }
 
 // Импорты функций для каждой игры
-import { initFlappyBird, resetFlappyBird, updateFlappyBird, drawFlappyBird } from './games/flappyBird.js';
-import { initDinoRun, resetDinoRun, updateDinoRun, drawDinoRun } from './games/dinoRun.js';
-import { initDoodleJump, resetDoodleJump, updateDoodleJump, drawDoodleJump } from './games/doodleJump.js';
-import { initSnake, resetSnake, updateSnake, drawSnake } from './games/snake.js';
-import { initBreakout, resetBreakout, updateBreakout, drawBreakout } from './games/breakout.js';
-import { init2048, reset2048, draw2048, move2048 } from './games/game2048.js';
+import { initFlappyBird, resetFlappyBird, updateFlappyBird, drawFlappyBird, setGameOver as setGameOverFlappy } from './games/flappyBird.js';
+import { initDinoRun, resetDinoRun, updateDinoRun, drawDinoRun, setGameOver as setGameOverDino } from './games/dinoRun.js';
+import { initDoodleJump, resetDoodleJump, updateDoodleJump, drawDoodleJump, setGameOver as setGameOverDoodle } from './games/doodleJump.js';
+import { initSnake, resetSnake, updateSnake, drawSnake, setGameOver as setGameOverSnake } from './games/snake.js';
+import { initBreakout, resetBreakout, updateBreakout, drawBreakout, setGameOver as setGameOverBreakout } from './games/breakout.js';
+import { init2048, reset2048, draw2048, move2048, setGameOver as setGameOver2048 } from './games/game2048.js';
