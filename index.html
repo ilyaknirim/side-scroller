@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flappy Bird - Telegram Mini App</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+</head>
+<body>
+    <div class="game-container">
+        <div class="game-header">
+            <div class="score">Счёт: <span id="score">0</span></div>
+            <div class="best-score">Лучший: <span id="best-score">0</span></div>
+        </div>
+
+        <canvas id="game-canvas" width="320" height="480"></canvas>
+
+        <div class="game-overlay" id="game-overlay">
+            <div class="overlay-content">
+                <h1 id="overlay-title">Flappy Bird</h1>
+                <p id="overlay-message">Нажмите, чтобы начать</p>
+                <button id="start-button">Начать игру</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="game.js"></script>
+</body>
+</html>
