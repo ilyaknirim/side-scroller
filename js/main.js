@@ -60,15 +60,21 @@ function saveBestScores() {
 function gameOver() {
     gameState = 'gameover';
 
+    // Получаем текущий счет в зависимости от игры
+    let currentScoreValue = score;
+    if (currentGame === 'breakout') {
+        currentScoreValue = getCurrentScore();
+    }
+
     // Обновляем лучший результат
-    if (score > bestScore[currentGame]) {
-        bestScore[currentGame] = score;
+    if (currentScoreValue > bestScore[currentGame]) {
+        bestScore[currentGame] = currentScoreValue;
         saveBestScores();
         bestScoreElement.textContent = bestScore[currentGame];
     }
 
     overlayTitle.textContent = 'Игра окончена!';
-    overlayMessage.textContent = `Ваш счёт: ${score}`;
+    overlayMessage.textContent = `Ваш счёт: ${currentScoreValue}`;
     startButton.textContent = 'Играть снова';
     gameOverlay.style.display = 'flex';
 }
@@ -334,5 +340,5 @@ import { initFlappyBird, resetFlappyBird, updateFlappyBird, drawFlappyBird, setG
 import { initDinoRun, resetDinoRun, updateDinoRun, drawDinoRun, setGameOver as setGameOverDino } from './games/dinoRun.js';
 import { initDoodleJump, resetDoodleJump, updateDoodleJump, drawDoodleJump, setGameOver as setGameOverDoodle, setCurrentGame as setCurrentGameDoodle } from './games/doodleJump.js';
 import { initSnake, resetSnake, updateSnake, drawSnake, setGameOver as setGameOverSnake } from './games/snake.js';
-import { initBreakout, resetBreakout, updateBreakout, drawBreakout, setGameOver as setGameOverBreakout, setCurrentGame as setCurrentGameBreakout } from './games/breakout.js';
+import { initBreakout, resetBreakout, updateBreakout, drawBreakout, setGameOver as setGameOverBreakout, setCurrentGame as setCurrentGameBreakout, getCurrentScore } from './games/breakout.js';
 import { init2048, reset2048, draw2048, move2048, setGameOver as setGameOver2048, setCurrentGame as setCurrentGame2048 } from './games/game2048.js';

@@ -1,6 +1,28 @@
 // Импорт констант и переменных
 import { GAME_WIDTH, GAME_HEIGHT } from '../constants.js';
-import { ctx, score, gameState, scoreElement } from '../main.js';
+import { ctx, gameState, scoreElement } from '../main.js';
+
+// Переменная для хранения счета
+let currentScore = 0;
+
+// Функция для обновления счета
+function updateScore(points) {
+    currentScore += points;
+    scoreElement.textContent = currentScore;
+    return currentScore;
+}
+
+// Функция для сброса счета
+function resetScore() {
+    currentScore = 0;
+    scoreElement.textContent = currentScore;
+    return currentScore;
+}
+
+// Функция для получения текущего счета
+export function getCurrentScore() {
+    return currentScore;
+}
 
 // Глобальная переменная для canvas
 let gameCanvas;
@@ -270,8 +292,7 @@ export const bricks = {
                         collisionDetected = true;
 
                         // Увеличиваем счет
-                        score += 10;
-                        scoreElement.textContent = score;
+                        updateScore(10);
 
                         // Проверяем, не разбиты ли все кирпичи
                         let allBricksDestroyed = true;
@@ -388,11 +409,12 @@ export function resetBreakout() {
     ball.reset();
     ball.speed = 4;
     bricks.reset();
-    score = 0;
-    scoreElement.textContent = score;
+    resetScore();
 
     // Отрисовываем фон сразу после сброса, чтобы избежать голубого экрана
-    background.draw();
+    if (background && typeof background.draw === 'function') {
+        background.draw();
+    }
 }
 
 export function updateBreakout() {
