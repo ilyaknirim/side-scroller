@@ -15,7 +15,15 @@ export let ball = {
   radius: 6,
   speed: 4,
   dx: 4,
-  dy: -4
+  dy: -4,
+  get velocityX() { return this.dx; },
+  set velocityX(value) { this.dx = value; },
+  get velocityY() { return this.dy; },
+  set velocityY(value) { this.dy = value; },
+  update: function() {
+    this.x += this.dx;
+    this.y += this.dy;
+  }
 };
 
 export let bricks = {
@@ -26,7 +34,24 @@ export let bricks = {
   padding: 5,
   offsetTop: 30,
   offsetLeft: 15,
-  positions: []
+  positions: [],
+  init: function() {
+    this.positions = [];
+    for (let r = 0; r < this.rows; r++) {
+      this.positions[r] = [];
+      for (let c = 0; c < this.cols; c++) {
+        this.positions[r][c] = { 
+          x: c * (this.width + this.padding) + this.offsetLeft,
+          y: r * (this.height + this.padding) + this.offsetTop,
+          status: 1
+        };
+      }
+    }
+  },
+  update: function() {
+    // Метод для обновления состояния кирпичей
+    // Реализация зависит от потребностей игры
+  }
 };
 
 // Фон игры
@@ -43,17 +68,7 @@ export function initBreakout(canvas) {
   canvas.height = GAME_HEIGHT;
 
   // Инициализация кирпичей
-  bricks.positions = [];
-  for (let r = 0; r < bricks.rows; r++) {
-    bricks.positions[r] = [];
-    for (let c = 0; c < bricks.cols; c++) {
-      bricks.positions[r][c] = { 
-        x: c * (bricks.width + bricks.padding) + bricks.offsetLeft,
-        y: r * (bricks.height + bricks.padding) + bricks.offsetTop,
-        status: 1
-      };
-    }
-  }
+  bricks.init();
 }
 
 // Сброс игры
@@ -65,16 +80,10 @@ export function resetBreakout() {
   ball.dx = 4;
   ball.dy = -4;
   score = 0;
-  scoreElement.textContent = score;
+  if (scoreElement) scoreElement.textContent = score;
 
   // Сброс кирпичей
-  for (let r = 0; r < bricks.rows; r++) {
-    for (let c = 0; c < bricks.cols; c++) {
-      if (bricks.positions[r] && bricks.positions[r][c]) {
-        bricks.positions[r][c].status = 1;
-      }
-    }
-  }
+  bricks.init();
 }
 
 // Обновление состояния игры
@@ -132,7 +141,8 @@ export function updateBreakout() {
         ) {
           ball.dy = -ball.dy;
           brick.status = 0;
-          updateScore(score + 10);
+          score += 10;
+          if (scoreElement) scoreElement.textContent = score;
         }
       }
     }
@@ -140,7 +150,7 @@ export function updateBreakout() {
 
   // Проверка проигрыша
   if (ball.y + ball.radius > GAME_HEIGHT) {
-    gameOver();
+    if (gameOverCallback) gameOverCallback();
   }
 }
 

@@ -1,5 +1,5 @@
 
-import { generateSessionParameters, generateSessionName } from '../js/proc_gen.js';
+import { generateSessionParameters, generateSessionName } from '../src/systems/proc_gen.js';
 
 test('proc_gen deterministic seed', () => {
   const p1 = generateSessionParameters(12345);
