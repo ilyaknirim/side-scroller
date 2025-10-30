@@ -25,6 +25,7 @@
 
       <button id="generate-btn" class="big" aria-label="Сгенерировать игру">Сгенерировать игру</button>
       <button id="character-btn" class="big" aria-label="Сгенерировать персонажа">Сгенерировать персонажа</button>
+      <button id="worldset-btn" class="big" aria-label="Сгенерировать мир">Сгенерировать мир</button>
     </div>
 
     <section id="session" class="hidden">
@@ -51,6 +52,16 @@
           <button id="regen-character-btn" aria-label="Сгенерировать нового персонажа">Сгенерировать нового персонажа</button>
           <button id="download-character-btn" aria-label="Скачать персонажа">Скачать персонажа (.txt)</button>
           <button id="back-character-btn" aria-label="Назад">Назад</button>
+        </div>
+      </section>
+      
+      <section id="worldset" class="hidden">
+        <h2>Мир</h2>
+        <pre id="worldset-text" aria-live="polite"></pre>
+        <div class="controls">
+          <button id="regen-worldset-btn" aria-label="Сгенерировать новый мир">Сгенерировать новый мир</button>
+          <button id="download-worldset-btn" aria-label="Скачать мир">Скачать мир (.txt)</button>
+          <button id="back-worldset-btn" aria-label="Назад">Назад</button>
         </div>
       </section>
     </section>
