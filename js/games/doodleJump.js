@@ -116,6 +116,22 @@ export const platforms = {
     maxPositions: 8,
     lastPlatformY: GAME_HEIGHT - 100,
 
+    // Проверка количества видимых платформ
+    checkVisiblePlatforms: function() {
+        let visiblePlatforms = 0;
+        for (const platform of this.positions) {
+            if (platform.y >= 0 && platform.y <= GAME_HEIGHT) {
+                visiblePlatforms++;
+            }
+        }
+        
+        // Если видимых платформ меньше 5, добавляем новые
+        while (visiblePlatforms < 5) {
+            this.generate();
+            visiblePlatforms++;
+        }
+    },
+    
     generate: function() {
         const minDistance = 50;
         const maxDistance = 100;
@@ -166,7 +182,16 @@ export const platforms = {
                 this.positions.splice(i, 1);
                 i--;
             }
+            
+            // Удаляем платформы, которые вышли за верхнюю границу экрана
+            if (platform.y + platform.height < 0) {
+                this.positions.splice(i, 1);
+                i--;
+            }
         }
+        
+        // Проверяем, что на экране всегда есть достаточное количество платформ
+        this.checkVisiblePlatforms();
 
         // Проверяем, стоит ли персонаж на платформе
         for (let i = 0; i < this.positions.length; i++) {
