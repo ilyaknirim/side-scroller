@@ -119,9 +119,16 @@ export const platforms = {
     // Проверка количества видимых платформ
     checkVisiblePlatforms: function() {
         let visiblePlatforms = 0;
+        let highestPlatform = GAME_HEIGHT;
+        
         for (const platform of this.positions) {
             if (platform.y >= 0 && platform.y <= GAME_HEIGHT) {
                 visiblePlatforms++;
+            }
+            
+            // Находим самую высокую платформу
+            if (platform.y < highestPlatform) {
+                highestPlatform = platform.y;
             }
         }
         
@@ -130,11 +137,28 @@ export const platforms = {
             this.generate();
             visiblePlatforms++;
         }
+        
+        // Дополнительная проверка: генерируем платформы заранее
+        // Если персонаж поднимается выше, генерируем платформы на большом расстоянии
+        if (doodle.y < GAME_HEIGHT / 2) {
+            // Генерируем платформу заранее, если самая высокая платформа слишком близко
+            if (highestPlatform > doodle.y - GAME_HEIGHT) {
+                this.generate();
+            }
+        }
     },
     
     generate: function() {
-        const minDistance = 50;
-        const maxDistance = 100;
+        // Адаптивное расстояние между платформами в зависимости от высоты персонажа
+        let minDistance = 50;
+        let maxDistance = 100;
+        
+        // Если персонаж высоко, увеличиваем расстояние между платформами
+        if (doodle.y < GAME_HEIGHT / 2) {
+            minDistance = 40;
+            maxDistance = 80;
+        }
+        
         const distance = minDistance + Math.random() * (maxDistance - minDistance);
 
         const y = this.lastPlatformY - distance;
