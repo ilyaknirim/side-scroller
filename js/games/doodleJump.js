@@ -285,6 +285,28 @@ export function initDoodleJump(canvasElement) {
 
 // Функция для настройки обработчиков событий
 function setupEventListeners() {
+    // Обработчик касания для прыжка
+    gameCanvas.addEventListener('touchstart', (e) => {
+        if (currentGame !== 'doodle' || gameState !== 'playing') return;
+        
+        // Предотвращаем обработку этого события в main.js
+        e.stopPropagation();
+        
+        // Выполняем прыжок
+        doodle.jump();
+    });
+
+    // Обработчик клика мыши для прыжка (для настольных устройств)
+    gameCanvas.addEventListener('click', (e) => {
+        if (currentGame !== 'doodle' || gameState !== 'playing') return;
+        
+        // Предотвращаем обработку этого события в main.js
+        e.stopPropagation();
+        
+        // Выполняем прыжок
+        doodle.jump();
+    });
+
     // Обработчики касаний для управления Doodle
     gameCanvas.addEventListener('touchmove', (e) => {
         if (currentGame !== 'doodle' || gameState !== 'playing') return;
