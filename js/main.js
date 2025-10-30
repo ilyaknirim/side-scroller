@@ -29,6 +29,12 @@ export let score = 0;
 let bestScore = {};
 let animationId = null;
 
+// Функция для обновления счета
+export function updateScore(newScore) {
+    score = newScore;
+    scoreElement.textContent = score;
+}
+
 // Экспортируем контекст и элементы для использования в других модулях
 export { ctx, scoreElement, canvas };
 

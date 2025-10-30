@@ -1,6 +1,6 @@
 // Импорт констант и переменных
 import { GAME_WIDTH, GAME_HEIGHT } from '../constants.js';
-import { ctx, score, gameState, scoreElement } from '../main.js';
+import { ctx, score, gameState, scoreElement, updateScore } from '../main.js';
 
 // Объявляем currentGame, так как он импортируется динамически
 let currentGame;
@@ -219,8 +219,7 @@ export const platforms = {
 
                         // Увеличиваем счет при успешном прыжке
                         if (j === i) {
-                            score++;
-                            scoreElement.textContent = score;
+                            updateScore(score + 1);
                         }
                     }
                 }
@@ -377,8 +376,7 @@ function setupEventListeners() {
 export function resetDoodleJump() {
     doodle.reset();
     platforms.reset();
-    score = 0;
-    scoreElement.textContent = score;
+    updateScore(0);
 }
 
 export function updateDoodleJump() {
