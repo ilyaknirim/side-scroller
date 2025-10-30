@@ -1,71 +1,63 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Классические игры - Telegram Mini App</title>
-    <link rel="stylesheet" href="styles.css">
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <base href='./'>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Ноосфера — Генератор игр</title>
+<link rel="stylesheet" href="styles.css" />
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="favicon.png">
+<meta property="og:title" content="Ноосфера — генератор психологических игр">
+<meta property="og:description" content="Процедурный генератор игровых сессий и мини-игры для Telegram WebApp.">
+<meta property="og:type" content="website">
+<link rel="preload" href="js/audio_manager.js" as="script">
 </head>
 <body>
-    <div class="app-container">
-        <!-- Меню выбора игр -->
-        <div class="menu-container" id="menu-container">
-            <h1>Классические Игры</h1>
-            <div class="games-grid">
-                <div class="game-card" data-game="flappy">
-                    <div class="game-icon flappy-icon"></div>
-                    <h3>Flappy Bird</h3>
-                    <p>Пролетай через трубы</p>
-                </div>
-                <div class="game-card" data-game="dino">
-                    <div class="game-icon dino-icon"></div>
-                    <h3>Dino Run</h3>
-                    <p>Убегай от кактусов</p>
-                </div>
-                <div class="game-card" data-game="doodle">
-                    <div class="game-icon doodle-icon"></div>
-                    <h3>Doodle Jump</h3>
-                    <p>Прыгай как можно выше</p>
-                </div>
-                <div class="game-card" data-game="snake">
-                    <div class="game-icon snake-icon"></div>
-                    <h3>Snake</h3>
-                    <p>Расти, поедая еду</p>
-                </div>
-                <div class="game-card" data-game="breakout">
-                    <div class="game-icon breakout-icon"></div>
-                    <h3>Breakout</h3>
-                    <p>Разбивай кирпичи</p>
-                </div>
-                <div class="game-card" data-game="2048">
-                    <div class="game-icon 2048-icon"></div>
-                    <h3>2048</h3>
-                    <p>Складывай плитки</p>
-                </div>
-            </div>
-        </div>
+<div class="app">
+  <header>
+    <h1>Ноосфера</h1>
+    <p class="sub">Генератор психологических игровых сессий</p>
+  </header>
 
-        <!-- Игровой контейнер -->
-        <div class="game-container" id="game-container" style="display: none;">
-            <button class="back-button" id="back-button">← Меню</button>
-            <div class="game-header">
-                <div class="score">Счёт: <span id="score">0</span></div>
-                <div class="best-score">Лучший: <span id="best-score">0</span></div>
-            </div>
+  <main>
+    <div id="menu"><div style="display:flex;gap:8px;align-items:center;"><input id="seed-input" placeholder="Seed (число) или оставь пустым" style="margin-left:8px;padding:6px;border-radius:6px;border:0;width:160px"/>
 
-            <canvas id="game-canvas" width="320" height="480"></canvas>
-
-            <div class="game-overlay" id="game-overlay">
-                <div class="overlay-content">
-                    <h1 id="overlay-title">Flappy Bird</h1>
-                    <p id="overlay-message">Нажмите, чтобы начать</p>
-                    <button id="start-button">Начать игру</button>
-                </div>
-            </div>
-        </div>
+      <button id="generate-btn" class="big" aria-label="Сгенерировать игру">Сгенерировать игру</button>
     </div>
 
-    <script type="module" src="js/main.js"></script>
+    <section id="session" class="hidden">
+      <h2>Сессия</h2>
+      <pre id="session-text" aria-live="polite"></pre>
+      <div class="controls">
+        <button id="regen-btn" aria-label="Сгенерировать заново">Сгенерировать заново</button>
+        <button id="play-btn" aria-label="Запустить сессию">Запустить сессию</button>
+        <button id="download-btn" aria-label="Скачать сессию">Скачать сессию (.txt)</button>
+        <button id="send-btn" aria-label="Отправить боту">Отправить боту</button>
+        <button id="back-btn" aria-label="Назад">Назад</button>
+      </div>
+
+      <div id="game-launcher" class="hidden">
+        <p id="launch-msg"></p>
+        <div id="game-root"></div>
+        <button id="stop-game" class="hidden">Остановить игру</button>
+      </div>
+    </section>
+  </main>
+
+  <footer>Ноосфера • Проект в концептуальной фазе</footer>
+</div>
+
+<script type="module" src="/src/ui/app.js"></script>
+
+<script>
+if('serviceWorker' in navigator){
+  window.addEventListener('load', ()=>{
+    navigator.serviceWorker.register('./sw.js').catch(()=>{/*sw reg failed*/});
+  });
+}
+</script>
+
+<button id="install-btn" style="display:none;position:fixed;right:16px;bottom:16px;padding:10px;border-radius:8px;background:#06b6d4;color:#022;border:0">Install</button>
 </body>
 </html>

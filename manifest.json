@@ -1,0 +1,15 @@
+{
+  "name": "Ноосфера",
+  "short_name": "Ноосфера",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#071229",
+  "theme_color": "#06b6d4",
+  "icons": [
+    {
+      "src": "favicon.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    }
+  ]
+}
