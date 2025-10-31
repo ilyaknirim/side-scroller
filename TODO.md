@@ -1,0 +1,2 @@
+- [x] Add comprehensive unit tests to tests/auto/src_systems_proc_gen.js.test.js for all functions in proc_gen.js
+- [x] Run npm test to verify tests pass
