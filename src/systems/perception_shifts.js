@@ -235,8 +235,8 @@ export class TunnelVision {
     }
 
     // Вычисляем целевой радиус на основе уровня стресса
-    const targetRadius = this.options.maxRadius - 
-                        (this.options.maxRadius - this.options.minRadius) * 
+    const targetRadius = this.options.maxRadius -
+                        (this.options.maxRadius - this.options.minRadius) *
                         (this.stressLevel / this.options.stressThreshold);
 
     // Плавно переходим к целевому радиусу

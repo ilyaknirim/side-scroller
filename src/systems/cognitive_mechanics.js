@@ -177,7 +177,7 @@ export class WorkingMemorySystem {
     // Отображаем символы последовательности
     this.sequenceContainer.innerHTML = '';
 
-    this.currentSequence.forEach((item, index) => {
+    this.currentSequence.forEach((item) => {
       // Создаем элемент для символа
       const symbolElement = document.createElement('div');
       symbolElement.style.width = '30px';
@@ -308,7 +308,7 @@ export class WorkingMemorySystem {
       isCorrect = false;
     } else {
       for (let i = 0; i < this.currentSequence.length; i++) {
-        if (this.currentSequence[i].type !== this.playerInput[i].type || 
+        if (this.currentSequence[i].type !== this.playerInput[i].type ||
             this.currentSequence[i].color !== this.playerInput[i].color) {
           isCorrect = false;
           break;
@@ -388,10 +388,10 @@ export function formatWorkingMemoryStats(stats) {
 Уровень сложности: ${stats.difficulty}
 Длина последовательности: ${stats.sequenceLength}
 
-${stats.successRate > 70 
-  ? 'Отличная рабочая память! Вы легко запоминаете сложные последовательности.' 
-  : stats.successRate > 40 
-  ? 'Неплохая рабочая память! Продолжайте тренироваться для улучшения.' 
+${stats.successRate > 70
+  ? 'Отличная рабочая память! Вы легко запоминаете сложные последовательности.'
+  : stats.successRate > 40
+  ? 'Неплохая рабочая память! Продолжайте тренироваться для улучшения.'
   : 'Рабочая память требует развития. Регулярные тренировки помогут улучшить результат.'}
   `.trim();
 }

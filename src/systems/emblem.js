@@ -1,7 +1,9 @@
 
 // emblem generator: returns an SVG string based on seed, theme, modifiers
+import { pseudoRandom } from "../utils/random.js";
+
 export function generateEmblemSVG(seed, theme, modifiers){
-  const rnd = (s=>()=>{ s = (s * 1664525 + 1013904223) >>> 0; return s / 4294967296; })(seed||Date.now());
+  const rnd = pseudoRandom(seed||Date.now());
   const colors = [
     `hsl(${Math.floor(rnd()*360)} 70% 60%)`,
     `hsl(${Math.floor(rnd()*360)} 60% 45%)`,

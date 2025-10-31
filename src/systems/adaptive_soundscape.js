@@ -205,12 +205,12 @@ export class AdaptiveSoundscape {
       // Обновляем частоту
       const harmonic = i + 1;
       oscillator.frequency.exponentialRampToValueAtTime(
-        this.baseFrequency * harmonic, 
+        this.baseFrequency * harmonic,
         this.audioContext.currentTime + 0.1
       );
 
       // Обновляем фильтр
-      const filterFreq = SOUNDSCAPE_PARAMS.baseFilterFrequency * (i + 1) * 
+      const filterFreq = SOUNDSCAPE_PARAMS.baseFilterFrequency * (i + 1) *
                          (this.currentMood === 'focused' ? 1.5 : 1);
       filter.frequency.exponentialRampToValueAtTime(
         filterFreq,
@@ -219,7 +219,7 @@ export class AdaptiveSoundscape {
     }
 
     // Обновляем мастер-фильтр
-    const masterFilterFreq = SOUNDSCAPE_PARAMS.baseFilterFrequency * 
+    const masterFilterFreq = SOUNDSCAPE_PARAMS.baseFilterFrequency *
                             (this.currentMood === 'mysterious' ? 0.7 : 1);
     this.masterFilter.frequency.exponentialRampToValueAtTime(
       masterFilterFreq,
@@ -236,7 +236,7 @@ export class AdaptiveSoundscape {
   }
 
   // Реакция на игровые события
-  onGameEvent(eventType, data) {
+  onGameEvent(eventType) {
     if (!this.enabled) return;
 
     switch (eventType) {

@@ -4,7 +4,7 @@ export function syncPublish(key, data){
   try{ localStorage.setItem('noosphere_sync_'+key, JSON.stringify({ts:Date.now(), data})); return true;}catch(e){return false;}
 }
 export function syncSubscribe(key, handler){
-  function onStorage(e){ if(e.key === 'noosphere_sync_'+key){ try{ handler(JSON.parse(e.newValue).data); }catch(_){} } }
+  function onStorage(e){ if(e.key === 'noosphere_sync_'+key){ try{ handler(JSON.parse(e.newValue).data); }catch(_){ /* ignore parse errors */ } } }
   window.addEventListener('storage', onStorage);
   return ()=> window.removeEventListener('storage', onStorage);
 }
