@@ -1,4 +1,4 @@
-import { pseudoRandom } from '../../src/utils/random.js';
+import { pseudoRandom } from '../src/utils/random.js';
 
 test('pseudoRandom: reproducible sequence for same seed and range [0,1)', () => {
   const a = pseudoRandom(42);

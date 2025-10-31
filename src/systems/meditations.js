@@ -1,8 +1,46 @@
+// Система медитаций - мини-цели для сессий
 
+// Список доступных медитаций
 export const MEDITATIONS = [
-  'Собери 3 мнемонических якоря в этой сессии.',
-  'Держи эмоциональный заряд на среднем уровне 30 секунд.',
-  'Найди 2 ассоциативные цепочки подряд.',
-  'Не используй перемотку времени более 2 раз.'
+  {
+    id: 'focus',
+    title: 'Focus Meditation',
+    description: 'Maintain concentration for 30 seconds',
+    duration: 30,
+    reward: 'clarity'
+  },
+  {
+    id: 'breath',
+    title: 'Breath Awareness',
+    description: 'Follow your breathing pattern',
+    duration: 60,
+    reward: 'calm'
+  },
+  {
+    id: 'mindfulness',
+    title: 'Mindful Observation',
+    description: 'Observe thoughts without judgment',
+    duration: 45,
+    reward: 'awareness'
+  },
+  {
+    id: 'gratitude',
+    title: 'Gratitude Practice',
+    description: 'Reflect on three things you\'re grateful for',
+    duration: 90,
+    reward: 'positivity'
+  },
+  {
+    id: 'body_scan',
+    title: 'Body Scan',
+    description: 'Systematically relax each part of your body',
+    duration: 120,
+    reward: 'relaxation'
+  }
 ];
-export function pickMeditation(seed){ const rnd = (s=>()=>{ s = (s * 1664525 + 1013904223) >>> 0; return s / 4294967296; })(seed||Date.now()); return MEDITATIONS[Math.floor(rnd()*MEDITATIONS.length)]; }
+
+// Функция для выбора медитации
+export function pickMeditation(seed = Math.random()) {
+  const index = Math.floor(seed * MEDITATIONS.length);
+  return MEDITATIONS[index];
+}

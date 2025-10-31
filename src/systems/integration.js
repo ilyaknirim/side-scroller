@@ -1,37 +1,34 @@
+// Система интеграции - генерация наборов миров
 
-// Модуль интеграции систем генерации персонажей и объектов мира
-
-import { generateCharacter, formatCharacterDescription } from './character_generator.js';
-import { generateWorldObject, formatWorldObjectDescription } from './world_generator.js';
-
-// Генерация связанного набора: персонаж + объект мира + сессия
-export function generateWorldSet(seed) {
-  const characterSeed = seed || Math.floor(Math.random() * 0xffffffff);
-  const worldObjectSeed = (seed || Math.floor(Math.random() * 0xffffffff)) + 1000;
-
-  const character = generateCharacter(characterSeed);
-  const worldObject = generateWorldObject(worldObjectSeed);
-
-  return {
-    character,
-    worldObject,
-    seed: seed || Date.now()
+// Функция для генерации набора миров
+export function generateWorldSet(seed = Math.random()) {
+  const random = (seed) => {
+    const x = Math.sin(seed) * 10000;
+    return x - Math.floor(x);
   };
+
+  const worlds = [];
+  for (let i = 0; i < 5; i++) {
+    worlds.push({
+      id: `world_${i}`,
+      name: `World ${i + 1}`,
+      seed: seed + i,
+      difficulty: Math.floor(random(seed + i) * 10) + 1,
+      theme: ['forest', 'desert', 'mountain', 'ocean'][Math.floor(random(seed + i * 2) * 4)]
+    });
+  }
+
+  return worlds;
 }
 
-// Форматирование полного описания набора
+// Функция для форматирования описания набора миров
 export function formatWorldSetDescription(worldSet) {
-  return `
-=== ПЕРСОНАЖ ===
-${formatCharacterDescription(worldSet.character)}
+  if (!Array.isArray(worldSet) || worldSet.length === 0) {
+    return 'Empty world set';
+  }
 
-=== ОБЪЕКТ МИРА ===
-${formatWorldObjectDescription(worldSet.worldObject)}
+  const themes = worldSet.map(w => w.theme).filter((v, i, a) => a.indexOf(v) === i);
+  const avgDifficulty = worldSet.reduce((sum, w) => sum + w.difficulty, 0) / worldSet.length;
 
-=== СВЯЗЬ ===
-Персонаж "${worldSet.character.name}" обнаруживает объект "${worldSet.worldObject.name}" в локации "${worldSet.worldObject.location}".
-Это событие меняет его судьбу и открывает новые возможности в мире Ноосферы.
-
-Сид генерации: ${worldSet.seed}
-  `.trim();
+  return `World Set: ${worldSet.length} worlds, themes: ${themes.join(', ')}, avg difficulty: ${avgDifficulty.toFixed(1)}`;
 }

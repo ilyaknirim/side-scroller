@@ -1,10 +1,43 @@
+// Синхронизация ноосферы - имитация синхронизации данных
 
-// simple fake sync: store shared state in localStorage key and notify via storage event
-export function syncPublish(key, data){
-  try{ localStorage.setItem('noosphere_sync_'+key, JSON.stringify({ts:Date.now(), data})); return true;}catch(e){return false;}
+// Функция для публикации данных
+export function syncPublish(data, channel = 'default') {
+  try {
+    // Имитация публикации - сохраняем в localStorage с префиксом канала
+    const key = `noosphere_${channel}`;
+    const existingData = JSON.parse(localStorage.getItem(key) || '[]');
+    existingData.push({
+      data,
+      timestamp: Date.now(),
+      id: Date.now().toString()
+    });
+
+    // Ограничение до 50 записей на канал
+    if (existingData.length > 50) {
+      existingData.splice(0, existingData.length - 50);
+    }
+
+    localStorage.setItem(key, JSON.stringify(existingData));
+    return { success: true, id: existingData[existingData.length - 1].id };
+  } catch (error) {
+    console.error('Sync publish error:', error);
+    return { success: false, error: error.message };
+  }
 }
-export function syncSubscribe(key, handler){
-  function onStorage(e){ if(e.key === 'noosphere_sync_'+key){ try{ handler(JSON.parse(e.newValue).data); }catch(_){ /* ignore parse errors */ } } }
-  window.addEventListener('storage', onStorage);
-  return ()=> window.removeEventListener('storage', onStorage);
+
+// Функция для подписки на данные
+export function syncSubscribe(channel = 'default', callback) {
+  try {
+    const key = `noosphere_${channel}`;
+    const data = JSON.parse(localStorage.getItem(key) || '[]');
+
+    if (typeof callback === 'function') {
+      data.forEach(item => callback(item));
+    }
+
+    return { success: true, data };
+  } catch (error) {
+    console.error('Sync subscribe error:', error);
+    return { success: false, error: error.message };
+  }
 }

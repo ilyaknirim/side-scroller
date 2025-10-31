@@ -1,3 +1,26 @@
+// Система лидерборда - сохранение и загрузка очков
 
-export function saveScore(gameId, score, meta){ const key='noosphere_scores_'+gameId; const arr=JSON.parse(localStorage.getItem(key)||'[]'); arr.push({ts:Date.now(),score,meta}); arr.sort((a,b)=>b.score-a.score); while(arr.length>10) arr.pop(); localStorage.setItem(key, JSON.stringify(arr)); }
-export function loadScores(gameId){ return JSON.parse(localStorage.getItem('noosphere_scores_'+gameId)||'[]'); }
+// Функция для сохранения очка
+export function saveScore(score, playerName = 'Anonymous') {
+  try {
+    const scores = loadScores();
+    scores.push({ score, playerName, timestamp: Date.now() });
+    scores.sort((a, b) => b.score - a.score);
+    localStorage.setItem('leaderboard', JSON.stringify(scores.slice(0, 10))); // Топ 10
+    return true;
+  } catch (error) {
+    console.error('Error saving score:', error);
+    return false;
+  }
+}
+
+// Функция для загрузки очков
+export function loadScores() {
+  try {
+    const scores = localStorage.getItem('leaderboard');
+    return scores ? JSON.parse(scores) : [];
+  } catch (error) {
+    console.error('Error loading scores:', error);
+    return [];
+  }
+}
