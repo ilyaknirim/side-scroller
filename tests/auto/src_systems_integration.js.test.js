@@ -2,11 +2,11 @@
 // TODO: replace with focused unit tests for the module's logic
 describe('src/systems/integration.js', () => {
   test('module can be imported', async () => {
-    const mod = await import('../src/systems/integration.js');
+    const mod = await import('../../src/systems/integration.js');
     expect(mod).toBeDefined();
   });
   test('exports sanity check', async () => {
-    const mod = await import('../src/systems/integration.js');
+    const mod = await import('../../src/systems/integration.js');
     expect(mod.generateWorldSet).toBeDefined();
     expect(mod.formatWorldSetDescription).toBeDefined();
   });

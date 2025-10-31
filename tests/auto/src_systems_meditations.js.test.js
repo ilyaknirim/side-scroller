@@ -2,11 +2,11 @@
 // TODO: replace with focused unit tests for the module's logic
 describe('src/systems/meditations.js', () => {
   test('module can be imported', async () => {
-    const mod = await import('../src/systems/meditations.js');
+    const mod = await import('../../src/systems/meditations.js');
     expect(mod).toBeDefined();
   });
   test('exports sanity check', async () => {
-    const mod = await import('../src/systems/meditations.js');
+    const mod = await import('../../src/systems/meditations.js');
     expect(mod.MEDITATIONS).toBeDefined();
     expect(mod.pickMeditation).toBeDefined();
   });

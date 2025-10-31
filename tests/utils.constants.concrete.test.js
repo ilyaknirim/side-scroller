@@ -1,4 +1,4 @@
-import { GAME_WIDTH, GAME_HEIGHT } from '../../src/utils/constants.js';
+import { GAME_WIDTH, GAME_HEIGHT } from '../src/utils/constants.js';
 
 test('GAME_WIDTH and GAME_HEIGHT are positive integers', () => {
   expect(Number.isFinite(GAME_WIDTH)).toBe(true);

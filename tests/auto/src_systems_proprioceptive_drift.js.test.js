@@ -2,11 +2,11 @@
 // TODO: replace with focused unit tests for the module's logic
 describe('src/systems/proprioceptive_drift.js', () => {
   test('module can be imported', async () => {
-    const mod = await import('../src/systems/proprioceptive_drift.js');
+    const mod = await import('../../src/systems/proprioceptive_drift.js');
     expect(mod).toBeDefined();
   });
   test('exports sanity check', async () => {
-    const mod = await import('../src/systems/proprioceptive_drift.js');
+    const mod = await import('../../src/systems/proprioceptive_drift.js');
     expect(mod.ProprioceptiveDrift).toBeDefined();
     expect(mod.createProprioceptiveDrift).toBeDefined();
   });
