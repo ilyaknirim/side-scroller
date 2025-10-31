@@ -14,5 +14,5 @@ export function createSeasonalModifiersSystem() {
 }
 
 export function formatSeasonInfo() {
-  return "Current season: Spring";
+  return 'Current season: Spring';
 }

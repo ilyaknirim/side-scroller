@@ -78,7 +78,7 @@ describe('src/systems/proc_gen.js', () => {
   describe('CHAOTIC_MODIFIERS', () => {
     test('is an array of strings', () => {
       expect(Array.isArray(mod.CHAOTIC_MODIFIERS)).toBe(true);
-      mod.CHAOTIC_MODIFIERS.forEach(modifier => {
+      mod.CHAOTIC_MODIFIERS.forEach((modifier) => {
         expect(typeof modifier).toBe('string');
       });
     });

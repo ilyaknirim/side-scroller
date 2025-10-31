@@ -3,7 +3,16 @@
 // Функция для генерации ID персонажа
 export function generateCharacterId(seed = Math.random()) {
   const adjectives = ['Brave', 'Wise', 'Swift', 'Mighty', 'Clever', 'Bold', 'Gentle', 'Fierce'];
-  const nouns = ['Warrior', 'Scholar', 'Explorer', 'Guardian', 'Artist', 'Healer', 'Hunter', 'Sage'];
+  const nouns = [
+    'Warrior',
+    'Scholar',
+    'Explorer',
+    'Guardian',
+    'Artist',
+    'Healer',
+    'Hunter',
+    'Sage',
+  ];
 
   const adjIndex = Math.floor(seed * adjectives.length);
   const nounIndex = Math.floor((seed * 1000) % nouns.length);
@@ -26,7 +35,7 @@ export function generateCharacter(seed = Math.random()) {
     primaryTrait,
     secondaryTrait,
     level: Math.floor(seed * 10) + 1,
-    experience: Math.floor(seed * 1000)
+    experience: Math.floor(seed * 1000),
   };
 }
 

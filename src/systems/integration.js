@@ -1,34 +1,45 @@
-// Система интеграции - генерация наборов миров
+// Интеграция систем - генерация наборов персонаж + объект мира
 
-// Функция для генерации набора миров
-export function generateWorldSet(seed = Math.random()) {
-  const random = (seed) => {
-    const x = Math.sin(seed) * 10000;
+// Функция для генерации набора персонаж + объект мира
+export function generateWorldSet(seed) {
+  const pseudoRandom = (seed) => {
+    let x = Math.sin(seed) * 10000;
     return x - Math.floor(x);
   };
 
-  const worlds = [];
-  for (let i = 0; i < 5; i++) {
-    worlds.push({
-      id: `world_${i}`,
-      name: `World ${i + 1}`,
-      seed: seed + i,
-      difficulty: Math.floor(random(seed + i) * 10) + 1,
-      theme: ['forest', 'desert', 'mountain', 'ocean'][Math.floor(random(seed + i * 2) * 4)]
-    });
-  }
+  const characters = [
+    'Воин Света',
+    'Теневой Странник',
+    'Кристаллический Маг',
+    'Лесной Дух',
+    'Огненный Феникс',
+    'Ледяной Страж',
+    'Громовой Титан',
+    'Ветреный Кочевник',
+  ];
 
-  return worlds;
+  const worldObjects = [
+    'Кристалл Вечности',
+    'Дерево Жизни',
+    'Огненный Алтарь',
+    'Ледяной Трон',
+    'Громовой Молот',
+    'Ветреный Кристалл',
+    'Земляной Тотем',
+    'Водяной Источник',
+  ];
+
+  const charIndex = Math.floor(pseudoRandom(seed) * characters.length);
+  const objIndex = Math.floor(pseudoRandom(seed + 1) * worldObjects.length);
+
+  return {
+    character: characters[charIndex],
+    worldObject: worldObjects[objIndex],
+    seed: seed,
+  };
 }
 
-// Функция для форматирования описания набора миров
+// Функция для форматирования описания набора
 export function formatWorldSetDescription(worldSet) {
-  if (!Array.isArray(worldSet) || worldSet.length === 0) {
-    return 'Empty world set';
-  }
-
-  const themes = worldSet.map(w => w.theme).filter((v, i, a) => a.indexOf(v) === i);
-  const avgDifficulty = worldSet.reduce((sum, w) => sum + w.difficulty, 0) / worldSet.length;
-
-  return `World Set: ${worldSet.length} worlds, themes: ${themes.join(', ')}, avg difficulty: ${avgDifficulty.toFixed(1)}`;
+  return `Персонаж: ${worldSet.character}\nОбъект мира: ${worldSet.worldObject}`;
 }

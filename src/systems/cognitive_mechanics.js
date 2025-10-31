@@ -45,7 +45,7 @@ export class WorkingMemorySystem {
       items: [...this.items],
       capacity: this.capacity,
       utilization: this.items.length / this.capacity,
-      errors: this.errors
+      errors: this.errors,
     };
   }
 }
@@ -57,5 +57,7 @@ export function createWorkingMemorySystem(capacity) {
 
 // Функция для форматирования статистики рабочей памяти
 export function formatWorkingMemoryStats(stats) {
-  return `Capacity: ${stats.capacity}, Items: ${stats.items.length}, Utilization: ${(stats.utilization * 100).toFixed(1)}%, Errors: ${stats.errors}`;
+  return `Capacity: ${stats.capacity}, Items: ${stats.items.length}, Utilization: ${(
+    stats.utilization * 100
+  ).toFixed(1)}%, Errors: ${stats.errors}`;
 }

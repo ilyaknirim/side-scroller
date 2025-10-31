@@ -16,25 +16,37 @@ export function generateEmblemSVG(seed = Math.random(), size = 64) {
 
   let shapeElement = '';
   switch (shape) {
-    case 'circle':
-      shapeElement = `<circle cx="${size/2}" cy="${size/2}" r="${size/3}" fill="${primaryColor}"/>`;
+    case 'circle': {
+      shapeElement = `<circle cx="${size / 2}" cy="${size / 2}" r="${
+        size / 3
+      }" fill="${primaryColor}"/>`;
       break;
-    case 'square':
-      shapeElement = `<rect x="${size/6}" y="${size/6}" width="${size*2/3}" height="${size*2/3}" fill="${primaryColor}"/>`;
+    }
+    case 'square': {
+      shapeElement = `<rect x="${size / 6}" y="${size / 6}" width="${(size * 2) / 3}" height="${
+        (size * 2) / 3
+      }" fill="${primaryColor}"/>`;
       break;
-    case 'triangle':
-      const points = `${size/2},${size/6} ${size/6},${size*5/6} ${size*5/6},${size*5/6}`;
+    }
+    case 'triangle': {
+      const points = `${size / 2},${size / 6} ${size / 6},${(size * 5) / 6} ${(size * 5) / 6},${
+        (size * 5) / 6
+      }`;
       shapeElement = `<polygon points="${points}" fill="${primaryColor}"/>`;
       break;
-    case 'diamond':
-      const dPoints = `${size/2},${size/6} ${size/6},${size/2} ${size/2},${size*5/6} ${size*5/6},${size/2}`;
+    }
+    case 'diamond': {
+      const dPoints = `${size / 2},${size / 6} ${size / 6},${size / 2} ${size / 2},${
+        (size * 5) / 6
+      } ${(size * 5) / 6},${size / 2}`;
       shapeElement = `<polygon points="${dPoints}" fill="${primaryColor}"/>`;
       break;
+    }
   }
 
   const svg = `
     <svg width="${size}" height="${size}" xmlns="http://www.w3.org/2000/svg">
-      <rect width="${size}" height="${size}" fill="${secondaryColor}" rx="${size/8}"/>
+      <rect width="${size}" height="${size}" fill="${secondaryColor}" rx="${size / 8}"/>
       ${shapeElement}
     </svg>
   `;

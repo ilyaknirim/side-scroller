@@ -1,9 +1,9 @@
 // Noosphere synchronization system
-export function syncPublish(data) {
+export function syncPublish() {
   // Stub implementation
 }
 
-export function syncSubscribe(callback) {
+export function syncSubscribe() {
   // Stub implementation
   return () => {};
 }

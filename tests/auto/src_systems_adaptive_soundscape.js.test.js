@@ -10,5 +10,29 @@ describe('src/systems/adaptive_soundscape.js', () => {
     expect(mod.AdaptiveSoundscape).toBeDefined();
     expect(mod.createSoundscape).toBeDefined();
   });
-  test.todo('add behavior tests for module functions');
+  test('add behavior tests for module functions', async () => {
+    const { AdaptiveSoundscape, createSoundscape } = await import(
+      '../../src/systems/adaptive_soundscape.js'
+    );
+    expect(typeof AdaptiveSoundscape).toBe('function');
+    expect(typeof createSoundscape).toBe('function');
+    // Test createSoundscape
+    const mockAudioContext = {};
+    const soundscape = createSoundscape(mockAudioContext);
+    expect(soundscape).toBeInstanceOf(AdaptiveSoundscape);
+    expect(soundscape.audioContext).toBe(mockAudioContext);
+    expect(soundscape.currentMood).toBe(0.5);
+    // Test setMood
+    soundscape.setMood(0.8);
+    expect(soundscape.currentMood).toBe(0.8);
+    // Test setMood with out of bounds values
+    soundscape.setMood(-0.1);
+    expect(soundscape.currentMood).toBe(0);
+    soundscape.setMood(1.5);
+    expect(soundscape.currentMood).toBe(1);
+    // Test destroy
+    soundscape.sources = [{ stop: jest.fn() }];
+    soundscape.destroy();
+    expect(soundscape.sources).toEqual([]);
+  });
 });

@@ -1,4 +1,8 @@
-import { pseudoRandom, generateWorldObject, formatWorldObjectDescription } from '../src/systems/world_generator.js';
+import {
+  pseudoRandom,
+  generateWorldObject,
+  formatWorldObjectDescription,
+} from '../src/systems/world_generator.js';
 
 test('pseudoRandom produces reproducible sequence and values in [0,1)', () => {
   const r1 = pseudoRandom(10);
@@ -6,7 +10,7 @@ test('pseudoRandom produces reproducible sequence and values in [0,1)', () => {
   const a = [r1(), r1(), r1()];
   const b = [r2(), r2(), r2()];
   expect(a).toEqual(b);
-  a.forEach(v => {
+  a.forEach((v) => {
     expect(typeof v).toBe('number');
     expect(v).toBeGreaterThanOrEqual(0);
     expect(v).toBeLessThan(1);

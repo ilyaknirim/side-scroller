@@ -4,7 +4,7 @@ export function generateLevel(seed) {
     id: `level_${seed}`,
     platforms: [],
     enemies: [],
-    collectibles: []
+    collectibles: [],
   };
 }
 

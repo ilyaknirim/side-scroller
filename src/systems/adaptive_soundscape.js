@@ -7,7 +7,7 @@ export class AdaptiveSoundscape {
     this.options = {
       baseVolume: options.baseVolume || 0.5,
       moodInfluence: options.moodInfluence || 0.3,
-      ...options
+      ...options,
     };
 
     this.currentMood = 0.5; // 0-1 scale
@@ -29,7 +29,7 @@ export class AdaptiveSoundscape {
 
   // Очистка ресурсов
   destroy() {
-    this.sources.forEach(source => {
+    this.sources.forEach((source) => {
       try {
         source.stop();
       } catch (e) {

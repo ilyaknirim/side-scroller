@@ -5,7 +5,7 @@ export function pseudoRandom(seed) {
   let state = seed % 2147483647;
   if (state <= 0) state += 2147483646;
 
-  return function() {
+  return function () {
     state = (state * 16807) % 2147483647;
     return (state - 1) / 2147483646;
   };
@@ -30,13 +30,15 @@ export function generateWorldObject(seed = Math.random()) {
     properties: [
       rnd() > 0.5 ? 'interactive' : null,
       rnd() > 0.7 ? 'destructible' : null,
-      rnd() > 0.8 ? 'movable' : null
-    ].filter(Boolean)
+      rnd() > 0.8 ? 'movable' : null,
+    ].filter(Boolean),
   };
 }
 
 // Функция для форматирования описания объекта мира
 export function formatWorldObjectDescription(worldObject) {
   const props = worldObject.properties.join(', ');
-  return `${worldObject.material} ${worldObject.type} (size: ${worldObject.size}, rarity: ${worldObject.rarity}${props ? ', ' + props : ''}) seed: ${worldObject.seed}`;
+  return `${worldObject.material} ${worldObject.type} (size: ${worldObject.size}, rarity: ${
+    worldObject.rarity
+  }${props ? ', ' + props : ''}) seed: ${worldObject.seed}`;
 }

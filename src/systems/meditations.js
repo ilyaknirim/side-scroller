@@ -7,36 +7,36 @@ export const MEDITATIONS = [
     title: 'Focus Meditation',
     description: 'Maintain concentration for 30 seconds',
     duration: 30,
-    reward: 'clarity'
+    reward: 'clarity',
   },
   {
     id: 'breath',
     title: 'Breath Awareness',
     description: 'Follow your breathing pattern',
     duration: 60,
-    reward: 'calm'
+    reward: 'calm',
   },
   {
     id: 'mindfulness',
     title: 'Mindful Observation',
     description: 'Observe thoughts without judgment',
     duration: 45,
-    reward: 'awareness'
+    reward: 'awareness',
   },
   {
     id: 'gratitude',
     title: 'Gratitude Practice',
-    description: 'Reflect on three things you\'re grateful for',
+    description: "Reflect on three things you're grateful for",
     duration: 90,
-    reward: 'positivity'
+    reward: 'positivity',
   },
   {
     id: 'body_scan',
     title: 'Body Scan',
     description: 'Systematically relax each part of your body',
     duration: 120,
-    reward: 'relaxation'
-  }
+    reward: 'relaxation',
+  },
 ];
 
 // Функция для выбора медитации

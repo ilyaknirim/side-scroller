@@ -1,102 +1,80 @@
-// Менеджер аудио - управление звуками и музыкой
+// Аудио менеджер - управление звуками и музыкой
 
-// Основной класс менеджера аудио
-class AudioManager {
+export default class AudioManager {
   constructor() {
     this.audioContext = null;
-    this.isInitialized = false;
-    this.volume = 0.5;
-    this.muted = false;
-    this.sources = new Map();
+    this.masterVolume = 0.5;
+    this.isMuted = false;
+    this.sounds = new Map();
+    this.music = null;
   }
 
   // Инициализация аудио контекста
   async init() {
     try {
       this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
-      this.isInitialized = true;
-      return true;
+      if (this.audioContext.state === 'suspended') {
+        await this.audioContext.resume();
+      }
     } catch (error) {
-      console.error('Failed to initialize audio context:', error);
-      return false;
+      console.warn('Audio context not supported:', error);
     }
   }
 
   // Воспроизведение звука
   async playSound(soundName, options = {}) {
-    if (!this.isInitialized || this.muted) return;
+    if (!this.audioContext || this.isMuted) return;
 
     try {
-      // Для минимальной реализации просто создаем простой тон
-      const oscillator = this.audioContext.createOscillator();
-      const gainNode = this.audioContext.createGain();
+      const buffer = this.sounds.get(soundName);
+      if (!buffer) {
+        console.warn(`Sound '${soundName}' not loaded`);
+        return;
+      }
 
-      oscillator.connect(gainNode);
+      const source = this.audioContext.createBufferSource();
+      source.buffer = buffer;
+
+      const gainNode = this.audioContext.createGain();
+      gainNode.gain.value = (options.volume || 1) * this.masterVolume;
+
+      source.connect(gainNode);
       gainNode.connect(this.audioContext.destination);
 
-      oscillator.frequency.setValueAtTime(options.frequency || 440, this.audioContext.currentTime);
-      gainNode.gain.setValueAtTime(this.volume, this.audioContext.currentTime);
-      gainNode.gain.exponentialRampToValueAtTime(0.01, this.audioContext.currentTime + (options.duration || 0.2));
-
-      oscillator.start();
-      oscillator.stop(this.audioContext.currentTime + (options.duration || 0.2));
-
-      this.sources.set(soundName, { oscillator, gainNode });
+      source.start(0);
     } catch (error) {
       console.error('Error playing sound:', error);
     }
   }
 
-  // Остановка звука
-  stopSound(soundName) {
-    const source = this.sources.get(soundName);
-    if (source) {
-      try {
-        source.oscillator.stop();
-      } catch (e) {
-        // Already stopped
-      }
-      this.sources.delete(soundName);
-    }
-  }
-
   // Установка громкости
   setVolume(volume) {
-    this.volume = Math.max(0, Math.min(1, volume));
-  }
-
-  // Установка настроения (для совместимости с тестами)
-  setMood(mood) {
-    // Простая реализация - регулируем громкость на основе настроения
-    this.setVolume(mood);
-  }
-
-  // Импульсное событие (для совместимости с тестами)
-  pulseEvent() {
-    // Простая реализация - ничего не делаем
+    this.masterVolume = Math.max(0, Math.min(1, volume));
   }
 
   // Включение/выключение звука
   setMuted(muted) {
-    this.muted = muted;
+    this.isMuted = muted;
   }
 
   // Очистка ресурсов
   destroy() {
-    this.sources.forEach(source => {
-      try {
-        source.oscillator.stop();
-      } catch (e) {
-        // Already stopped
-      }
-    });
-    this.sources.clear();
-
     if (this.audioContext) {
       this.audioContext.close();
+      this.audioContext = null;
     }
+    this.sounds.clear();
+  }
+
+  // Установка настроения для адаптивного саундскейпа
+  setMood(mood) {
+    // Метод для интеграции с adaptive_soundscape
+    // mood - значение от 0 до 1
+    this.mood = mood;
+  }
+
+  // Импульсное событие (например, для эффектов)
+  pulseEvent() {
+    // Метод для импульсных звуковых эффектов
   }
 }
-
-// Экспорт по умолчанию
-export default AudioManager;

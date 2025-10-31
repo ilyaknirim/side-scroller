@@ -1,4 +1,8 @@
-import { generateSessionName, applyMoodFromModifiers, generateMicroStory } from '../src/systems/proc_gen.js';
+import {
+  generateSessionName,
+  applyMoodFromModifiers,
+  generateMicroStory,
+} from '../src/systems/proc_gen.js';
 
 test('generateSessionName uses seed to pick title deterministically', () => {
   const n1 = generateSessionName('Тема', [], 3);

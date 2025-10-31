@@ -13,7 +13,7 @@ export class MnemonicAnchors {
       id: Date.now().toString(),
       label,
       state: JSON.parse(JSON.stringify(state)), // Глубокая копия
-      timestamp: Date.now()
+      timestamp: Date.now(),
     };
 
     this.anchors.push(anchor);
@@ -28,7 +28,7 @@ export class MnemonicAnchors {
 
   // Восстановление состояния из якоря
   restoreAnchor(anchorId) {
-    const anchor = this.anchors.find(a => a.id === anchorId);
+    const anchor = this.anchors.find((a) => a.id === anchorId);
     if (anchor) {
       return JSON.parse(JSON.stringify(anchor.state)); // Глубокая копия
     }
@@ -42,7 +42,7 @@ export class MnemonicAnchors {
 
   // Удаление якоря
   removeAnchor(anchorId) {
-    this.anchors = this.anchors.filter(a => a.id !== anchorId);
+    this.anchors = this.anchors.filter((a) => a.id !== anchorId);
   }
 
   // Очистка всех якорей

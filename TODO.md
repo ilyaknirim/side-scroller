@@ -1,7 +1,7 @@
 - [x] Add comprehensive unit tests to tests/auto/src_systems_proc_gen.js.test.js for all functions in proc_gen.js
 - [x] Run npm test to verify tests pass
-- [ ] Create missing source files for failing tests
-- [ ] Fix test imports and implementations
+- [x] Create missing source files for failing tests
+- [x] Fix test imports and implementations
 
 # TODO.md: ГЕНЕРАТОР ПСИХОЛОГИЧЕСКИХ ИГР "НООСФЕРА"
 
@@ -285,26 +285,26 @@
 - [x] Minification applied to dist
 
 ## Create missing source files for failing tests
-- [ ] Create src/systems/leaderboard.js with saveScore, loadScores
-- [ ] Create src/systems/integration.js with generateWorldSet, formatWorldSetDescription
-- [ ] Create src/systems/adaptive_soundscape.js with AdaptiveSoundscape, createSoundscape
-- [ ] Create src/systems/adaptive_difficulty.js with PlayerPerformanceTracker, createPerformanceTracker, formatPerformanceStats
-- [ ] Create src/systems/audio_manager.js with default export
-- [ ] Create src/systems/cognitive_mechanics.js with WorkingMemorySystem, createWorkingMemorySystem, formatWorkingMemoryStats
-- [ ] Create src/systems/character_generator.js with generateCharacterId, generateCharacter, formatCharacterDescription
-- [ ] Create src/systems/meditations.js with MEDITATIONS, pickMeditation
-- [ ] Create src/systems/mnemonic_anchors.js with MnemonicAnchors, createMnemonicAnchors
-- [ ] Create src/systems/game_systems_integration.js with GameSystemsIntegration, createGameSystemsIntegration
-- [ ] Create src/systems/gallery.js with saveSessionToGallery, loadGallery
-- [ ] Create src/systems/level_generator.js with generateLevel, formatLevelDescription
-- [ ] Create src/systems/emblem.js with generateEmblemSVG, emblemToDataUrl
-- [ ] Create src/systems/chromatic_adaptation.js with ChromaticAdaptation, createChromaticAdaptation
-- [ ] Create src/systems/perception_shifts.js with PerceptionInversion, TunnelVision, createPerceptionInversion
-- [ ] Create src/systems/seasonal_modifiers.js with SeasonalModifiersSystem, createSeasonalModifiersSystem, formatSeasonInfo
-- [ ] Create src/systems/visuals.js with initVisuals
-- [ ] Create src/systems/particles.js with createParticleEmitter
-- [ ] Create src/systems/noosphere_sync.js with syncPublish, syncSubscribe
-- [ ] Create src/systems/world_generator.js with pseudoRandom, generateWorldObject, formatWorldObjectDescription
-- [ ] Create src/ui/app.js
-- [ ] Create src/utils/constants.js with GAME_WIDTH, GAME_HEIGHT
-- [ ] Create src/utils/random.js with pseudoRandom
+- [x] Create src/systems/leaderboard.js with saveScore, loadScores
+- [x] Create src/systems/integration.js with generateWorldSet, formatWorldSetDescription
+- [x] Create src/systems/adaptive_soundscape.js with AdaptiveSoundscape, createSoundscape
+- [x] Create src/systems/adaptive_difficulty.js with PlayerPerformanceTracker, createPerformanceTracker, formatPerformanceStats
+- [x] Create src/systems/audio_manager.js with default export
+- [x] Create src/systems/cognitive_mechanics.js with WorkingMemorySystem, createWorkingMemorySystem, formatWorkingMemoryStats
+- [x] Create src/systems/character_generator.js with generateCharacterId, generateCharacter, formatCharacterDescription
+- [x] Create src/systems/meditations.js with MEDITATIONS, pickMeditation
+- [x] Create src/systems/mnemonic_anchors.js with MnemonicAnchors, createMnemonicAnchors
+- [x] Create src/systems/game_systems_integration.js with GameSystemsIntegration, createGameSystemsIntegration
+- [x] Create src/systems/gallery.js with saveSessionToGallery, loadGallery
+- [x] Create src/systems/level_generator.js with generateLevel, formatLevelDescription
+- [x] Create src/systems/emblem.js with generateEmblemSVG, emblemToDataUrl
+- [x] Create src/systems/chromatic_adaptation.js with ChromaticAdaptation, createChromaticAdaptation
+- [x] Create src/systems/perception_shifts.js with PerceptionInversion, TunnelVision, createPerceptionInversion
+- [x] Create src/systems/seasonal_modifiers.js with SeasonalModifiersSystem, createSeasonalModifiersSystem, formatSeasonInfo
+- [x] Create src/systems/visuals.js with initVisuals
+- [x] Create src/systems/particles.js with createParticleEmitter
+- [x] Create src/systems/noosphere_sync.js with syncPublish, syncSubscribe
+- [x] Create src/systems/world_generator.js with pseudoRandom, generateWorldObject, formatWorldObjectDescription
+- [x] Create src/ui/app.js
+- [x] Create src/utils/constants.js with GAME_WIDTH, GAME_HEIGHT
+- [x] Create src/utils/random.js with pseudoRandom

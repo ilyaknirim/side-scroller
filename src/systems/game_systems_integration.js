@@ -21,8 +21,8 @@ export class GameSystemsIntegration {
   // Инициализация всех систем
   async init() {
     const initPromises = Array.from(this.systems.values())
-      .filter(system => typeof system.init === 'function')
-      .map(system => system.init());
+      .filter((system) => typeof system.init === 'function')
+      .map((system) => system.init());
 
     await Promise.all(initPromises);
     this.initialized = true;
@@ -33,7 +33,7 @@ export class GameSystemsIntegration {
   update(deltaTime) {
     if (!this.initialized) return;
 
-    this.systems.forEach(system => {
+    this.systems.forEach((system) => {
       if (typeof system.update === 'function') {
         system.update(deltaTime);
       }
@@ -42,7 +42,7 @@ export class GameSystemsIntegration {
 
   // Очистка всех систем
   destroy() {
-    this.systems.forEach(system => {
+    this.systems.forEach((system) => {
       if (typeof system.destroy === 'function') {
         system.destroy();
       }

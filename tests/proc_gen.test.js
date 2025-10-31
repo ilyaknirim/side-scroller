@@ -1,4 +1,3 @@
-
 import { generateSessionParameters, generateSessionName } from '../src/systems/proc_gen.js';
 
 test('proc_gen deterministic seed', () => {
@@ -8,7 +7,7 @@ test('proc_gen deterministic seed', () => {
   expect(p1.difficulty).toBe(p2.difficulty);
 });
 
-test('generateSessionName returns string with theme', ()=>{
+test('generateSessionName returns string with theme', () => {
   const p = generateSessionParameters(42);
   const name = generateSessionName(p.theme, p.modifiers, p.seed);
   expect(typeof name).toBe('string');

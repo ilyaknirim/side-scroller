@@ -1,4 +1,4 @@
-// Адаптивная система сложности - отслеживание производительности игрока
+// Адаптивная сложность - отслеживание производительности игрока
 
 // Класс для отслеживания производительности игрока
 export class PlayerPerformanceTracker {
@@ -8,46 +8,45 @@ export class PlayerPerformanceTracker {
       startTime: Date.now(),
       actions: [],
       score: 0,
-      mistakes: 0
+      mistakes: 0,
     };
   }
 
-  // Регистрация действия
-  recordAction(actionType, success = true) {
+  // Запись действия игрока
+  recordAction(actionType, success) {
     this.currentSession.actions.push({
       type: actionType,
-      success,
-      timestamp: Date.now()
+      success: success,
+      timestamp: Date.now(),
     });
-
     if (!success) {
       this.currentSession.mistakes++;
     }
   }
 
-  // Установка очков
+  // Установка счета
   setScore(score) {
     this.currentSession.score = score;
   }
 
   // Завершение сессии
   endSession() {
-    this.currentSession.endTime = Date.now();
-    this.currentSession.duration = this.currentSession.endTime - this.currentSession.startTime;
+    const endTime = Date.now();
+    this.currentSession.duration = endTime - this.currentSession.startTime;
     this.sessions.push({ ...this.currentSession });
-
-    // Сброс для новой сессии
     this.currentSession = {
       startTime: Date.now(),
       actions: [],
       score: 0,
-      mistakes: 0
+      mistakes: 0,
     };
   }
 
   // Получение статистики производительности
   getPerformanceStats() {
-    if (this.sessions.length === 0) return null;
+    if (this.sessions.length === 0) {
+      return null;
+    }
 
     const totalSessions = this.sessions.length;
     const avgScore = this.sessions.reduce((sum, s) => sum + s.score, 0) / totalSessions;
@@ -57,8 +56,8 @@ export class PlayerPerformanceTracker {
     return {
       totalSessions,
       avgScore: Math.round(avgScore),
-      avgMistakes: Math.round(avgMistakes),
-      avgDuration: Math.round(avgDuration)
+      avgMistakes: Math.round(avgMistakes * 100) / 100,
+      avgDuration: Math.round(avgDuration),
     };
   }
 }
@@ -70,7 +69,9 @@ export function createPerformanceTracker() {
 
 // Функция для форматирования статистики производительности
 export function formatPerformanceStats(stats) {
-  if (!stats) return 'No performance data available';
+  if (!stats) {
+    return 'No performance data available';
+  }
 
-  return `Sessions: ${stats.totalSessions}, Avg Score: ${stats.avgScore}, Avg Mistakes: ${stats.avgMistakes}, Avg Duration: ${Math.round(stats.avgDuration / 1000)}s`;
+  return `Sessions: ${stats.totalSessions}\nAvg Score: ${stats.avgScore}\nAvg Mistakes: ${stats.avgMistakes}\nAvg Duration: ${stats.avgDuration}ms`;
 }

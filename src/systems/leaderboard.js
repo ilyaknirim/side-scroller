@@ -1,12 +1,23 @@
-// Система лидерборда - сохранение и загрузка очков
+// Лидерборд - сохранение и загрузка лучших результатов
 
-// Функция для сохранения очка
+// Функция для сохранения результата
 export function saveScore(score, playerName = 'Anonymous') {
   try {
-    const scores = loadScores();
-    scores.push({ score, playerName, timestamp: Date.now() });
-    scores.sort((a, b) => b.score - a.score);
-    localStorage.setItem('leaderboard', JSON.stringify(scores.slice(0, 10))); // Топ 10
+    const leaderboard = loadScores();
+    const newScore = {
+      score,
+      playerName,
+      timestamp: Date.now(),
+    };
+
+    leaderboard.push(newScore);
+    // Сортировка по убыванию и ограничение до 10 лучших
+    leaderboard.sort((a, b) => b.score - a.score);
+    if (leaderboard.length > 10) {
+      leaderboard.splice(10);
+    }
+
+    localStorage.setItem('leaderboard', JSON.stringify(leaderboard));
     return true;
   } catch (error) {
     console.error('Error saving score:', error);
@@ -14,11 +25,11 @@ export function saveScore(score, playerName = 'Anonymous') {
   }
 }
 
-// Функция для загрузки очков
+// Функция для загрузки результатов
 export function loadScores() {
   try {
-    const scores = localStorage.getItem('leaderboard');
-    return scores ? JSON.parse(scores) : [];
+    const leaderboard = localStorage.getItem('leaderboard');
+    return leaderboard ? JSON.parse(leaderboard) : [];
   } catch (error) {
     console.error('Error loading scores:', error);
     return [];
