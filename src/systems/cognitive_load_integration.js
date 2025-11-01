@@ -1,6 +1,10 @@
 // Интеграция системы когнитивной нагрузки с игровой механикой
 
-import { createCognitiveLoadSystem, createCognitiveTask, formatCognitiveLoadStats } from './cognitive_load.js';
+import {
+  createCognitiveLoadSystem,
+  createCognitiveTask,
+  formatCognitiveLoadStats,
+} from './cognitive_load.js';
 
 // Класс для интеграции системы когнитивной нагрузки в игру
 export class CognitiveLoadIntegration {
@@ -94,7 +98,9 @@ export class CognitiveLoadIntegration {
       <div>Сложность: ${task.complexity.toFixed(1)}</div>
       <div>Срочность: ${task.urgency.toFixed(1)}</div>
       <div class="task-progress" style="height: 4px; background-color: rgba(255,255,255,0.2); margin-top: 4px;">
-        <div class="task-progress-bar" style="height: 100%; width: 0%; background-color: ${this.getTaskColor(task.type)};"></div>
+        <div class="task-progress-bar" style="height: 100%; width: 0%; background-color: ${this.getTaskColor(
+          task.type
+        )};"></div>
       </div>
     `;
 
@@ -111,11 +117,11 @@ export class CognitiveLoadIntegration {
   // Получение цвета для типа задачи
   getTaskColor(taskType) {
     const colors = {
-      'память': '#3498db',      // синий
-      'внимание': '#2ecc71',    // зеленый
-      'принятие решений': '#e74c3c',  // красный
-      'реакция': '#f39c12',     // оранжевый
-      'планирование': '#9b59b6'  // фиолетовый
+      память: '#3498db', // синий
+      внимание: '#2ecc71', // зеленый
+      'принятие решений': '#e74c3c', // красный
+      реакция: '#f39c12', // оранжевый
+      планирование: '#9b59b6', // фиолетовый
     };
 
     return colors[taskType] || '#95a5a6'; // серый по умолчанию
@@ -146,7 +152,7 @@ export class CognitiveLoadIntegration {
   // Обновление визуальных элементов задач
   updateTaskElements(state) {
     // Удаляем элементы для завершенных задач
-    this.taskElements.forEach(element => {
+    this.taskElements.forEach((element) => {
       if (element.parentNode) {
         element.parentNode.removeChild(element);
       }
@@ -156,7 +162,7 @@ export class CognitiveLoadIntegration {
     this.taskElements = [];
 
     // Обновляем существующие задачи
-    state.tasks.forEach(task => {
+    state.tasks.forEach((task) => {
       if (task.element) {
         // Обновляем прогресс-бар
         const progressBar = task.element.querySelector('.task-progress-bar');
@@ -180,7 +186,9 @@ export class CognitiveLoadIntegration {
     this.loadIndicator.textContent = `Нагрузка: ${state.currentLoad.toFixed(1)}`;
 
     // Обновляем индикатор сложности
-    this.difficultyIndicator.textContent = `Сложность: ${state.currentDifficulty.toFixed(1)}/${state.maxDifficulty}`;
+    this.difficultyIndicator.textContent = `Сложность: ${state.currentDifficulty.toFixed(1)}/${
+      state.maxDifficulty
+    }`;
 
     // Меняем цвет индикатора сложности в зависимости от уровня
     const ratio = state.difficultyRatio;

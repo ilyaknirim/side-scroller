@@ -13,7 +13,7 @@ export class CognitiveBiasesSystem {
       'availability', // Искажение доступности - платформа появляется/исчезает при наблюдении
       'anchoring', // Эффект якоря - платформа "притягивает" игрока при наблюдении
       'illusory', // Иллюзорное искажение - платформа меняет форму при наблюдении
-      'bandwagon' // Эффект толпы - платформа следует за другими платформами при наблюдении
+      'bandwagon', // Эффект толпы - платформа следует за другими платформами при наблюдении
     ];
   }
 
@@ -36,10 +36,10 @@ export class CognitiveBiasesSystem {
         color: platform.color || '#ffffff',
         solid: platform.solid !== undefined ? platform.solid : true,
         dangerous: platform.dangerous || false,
-        visible: platform.visible !== undefined ? platform.visible : true
+        visible: platform.visible !== undefined ? platform.visible : true,
       },
       currentProperties: { ...platform },
-      lastObservationTime: 0
+      lastObservationTime: 0,
     };
 
     this.biases.push(bias);
@@ -57,8 +57,8 @@ export class CognitiveBiasesSystem {
 
     // Проверяем расстояние до игрока
     const distance = Math.sqrt(
-      Math.pow(platform.x - this.playerPosition.x, 2) + 
-      Math.pow(platform.y - this.playerPosition.y, 2)
+      Math.pow(platform.x - this.playerPosition.x, 2) +
+        Math.pow(platform.y - this.playerPosition.y, 2)
     );
 
     return distance <= this.observationRadius;
@@ -99,7 +99,7 @@ export class CognitiveBiasesSystem {
             const pullForce = strength * 0.1;
             platform.pullForce = {
               x: (dx / distance) * pullForce,
-              y: (dy / distance) * pullForce
+              y: (dy / distance) * pullForce,
             };
           }
         } else {
@@ -125,7 +125,7 @@ export class CognitiveBiasesSystem {
           let nearestBias = null;
           let nearestDistance = Infinity;
 
-          this.biases.forEach(otherBias => {
+          this.biases.forEach((otherBias) => {
             if (otherBias !== bias) {
               const dx = otherBias.platform.x - platform.x;
               const dy = otherBias.platform.y - platform.y;
@@ -159,7 +159,7 @@ export class CognitiveBiasesSystem {
   update(deltaTime) {
     const now = Date.now();
 
-    this.biases.forEach(bias => {
+    this.biases.forEach((bias) => {
       // Проверяем, наблюдается ли платформа
       const wasObserved = bias.isObserved;
       bias.isObserved = this.isPlatformObserved(bias);
@@ -177,31 +177,31 @@ export class CognitiveBiasesSystem {
   // Получение текущего состояния
   getState() {
     return {
-      biases: this.biases.map(bias => ({
+      biases: this.biases.map((bias) => ({
         type: bias.type,
         strength: bias.strength,
         isObserved: bias.isObserved,
-        platformId: bias.platform.id || 'unknown'
+        platformId: bias.platform.id || 'unknown',
       })),
       observationRadius: this.observationRadius,
-      playerPosition: { ...this.playerPosition }
+      playerPosition: { ...this.playerPosition },
     };
   }
 
   // Сброс системы
   reset() {
     // Восстанавливаем исходные свойства всех платформ
-    this.biases.forEach(bias => {
+    this.biases.forEach((bias) => {
       const { platform, originalProperties } = bias;
 
       // Восстанавливаем исходные свойства
-      Object.keys(originalProperties).forEach(key => {
+      Object.keys(originalProperties).forEach((key) => {
         platform[key] = originalProperties[key];
       });
 
       // Удаляем дополнительные свойства
-      if (platform.pullForce) {
-        delete platform.pullForce;
+      if (platform.pullForce !== undefined) {
+        platform.pullForce = { x: 0, y: 0 };
       }
     });
 
@@ -216,19 +216,22 @@ export function createCognitiveBiasesSystem(maxBiases) {
 
 // Функция для форматирования статистики когнитивных искажений
 export function formatCognitiveBiasesStats(stats) {
-  const observedCount = stats.biases.filter(bias => bias.isObserved).length;
+  const observedCount = stats.biases.filter((bias) => bias.isObserved).length;
   return `Искажений: ${stats.biases.length}/${stats.maxBiases || 5}, Наблюдается: ${observedCount}`;
 }
 
 // Функция для создания платформы с когнитивным искажением
 export function createBiasedPlatform(x, y, width, height, type, strength) {
   return {
-    x, y, width, height,
+    x,
+    y,
+    width,
+    height,
     color: '#ffffff',
     solid: true,
     dangerous: false,
     visible: true,
     biasType: type,
-    biasStrength: strength
+    biasStrength: strength,
   };
 }

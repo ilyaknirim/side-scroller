@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <base href='./'>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Ноосфера — Генератор игр</title>
+<link rel="manifest" href="./assets/manifest-C8W7nDgg.json">
+<link rel="icon" href="./assets/favicon-CdxSQWkx.svg">
+<meta property="og:title" content="Ноосфера — генератор психологических игр">
+<meta property="og:description" content="Процедурный генератор игровых сессий и мини-игры для Telegram WebApp.">
+<meta property="og:type" content="website">
+
+  <script type="module" crossorigin src="./assets/index-Dyng1enw.js"></script>
+  <link rel="stylesheet" crossorigin href="./assets/index-BUM9djgT.css">
+</head>
+<body>
+<div class="app">
+  <header>
+    <h1>Ноосфера</h1>
+    <p class="sub">Генератор психологических игровых сессий</p>
+  </header>
+
+  <main>
+    <div id="menu"><div style="display:flex;gap:8px;align-items:center;"><input id="seed-input" placeholder="Seed (число) или оставь пустым" style="margin-left:8px;padding:6px;border-radius:6px;border:0;width:160px"/>
+
+      <button id="generate-btn" class="big" aria-label="Сгенерировать игру">Сгенерировать игру</button>
+      <button id="character-btn" class="big" aria-label="Сгенерировать персонажа">Сгенерировать персонажа</button>
+      <button id="worldset-btn" class="big" aria-label="Сгенерировать мир">Сгенерировать мир</button>
+    </div>
+
+    <section id="session" class="hidden">
+      <h2>Сессия</h2>
+      <pre id="session-text" aria-live="polite"></pre>
+      <div class="controls">
+        <button id="regen-btn" aria-label="Сгенерировать заново">Сгенерировать заново</button>
+        <button id="play-btn" aria-label="Запустить сессию">Запустить сессию</button>
+        <button id="download-btn" aria-label="Скачать сессию">Скачать сессию (.txt)</button>
+        <button id="send-btn" aria-label="Отправить боту">Отправить боту</button>
+        <button id="back-btn" aria-label="Назад">Назад</button>
+      </div>
+
+      <div id="game-launcher" class="hidden">
+        <p id="launch-msg"></p>
+        <div id="game-root"></div>
+        <button id="stop-game" class="hidden">Остановить игру</button>
+      </div>
+      
+      <section id="character" class="hidden">
+        <h2>Персонаж</h2>
+        <pre id="character-text" aria-live="polite"></pre>
+        <div class="controls">
+          <button id="regen-character-btn" aria-label="Сгенерировать нового персонажа">Сгенерировать нового персонажа</button>
+          <button id="download-character-btn" aria-label="Скачать персонажа">Скачать персонажа (.txt)</button>
+          <button id="back-character-btn" aria-label="Назад">Назад</button>
+        </div>
+      </section>
+      
+      <section id="worldset" class="hidden">
+        <h2>Мир</h2>
+        <pre id="worldset-text" aria-live="polite"></pre>
+        <div class="controls">
+          <button id="regen-worldset-btn" aria-label="Сгенерировать новый мир">Сгенерировать новый мир</button>
+          <button id="download-worldset-btn" aria-label="Скачать мир">Скачать мир (.txt)</button>
+          <button id="back-worldset-btn" aria-label="Назад">Назад</button>
+        </div>
+      </section>
+    </section>
+  </main>
+
+  <footer>Ноосфера • Проект в концептуальной фазе</footer>
+</div>
+
+
+<script>
+if('serviceWorker' in navigator){
+  window.addEventListener('load', ()=>{
+    navigator.serviceWorker.register('./sw.js').catch(()=>{/*sw reg failed*/});
+  });
+}
+</script>
+
+<button id="install-btn" style="display:none;position:fixed;right:16px;bottom:16px;padding:10px;border-radius:8px;background:#06b6d4;color:#022;border:0">Install</button>
+</body>
+</html>

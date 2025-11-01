@@ -1,6 +1,10 @@
 // Интеграция системы разделения внимания с игровой механикой
 
-import { createAttentionSplittingSystem, createAttentionEntity, formatAttentionSplittingStats } from './attention_splitting.js';
+import {
+  createAttentionSplittingSystem,
+  createAttentionEntity,
+  formatAttentionSplittingStats,
+} from './attention_splitting.js';
 
 // Класс для интеграции системы разделения внимания в игру
 export class AttentionSplittingIntegration {
@@ -84,15 +88,10 @@ export class AttentionSplittingIntegration {
   // Создание начальных сущностей
   createInitialEntities() {
     for (let i = 0; i < this.attentionSystem.maxEntities; i++) {
-      const entity = createAttentionEntity(
-        'player', 
-        100 + i * 150, 
-        200,
-        {
-          color: `hsl(${i * 120}, 70%, 50%)`,
-          speed: 1 + i * 0.2
-        }
-      );
+      const entity = createAttentionEntity('player', 100 + i * 150, 200, {
+        color: `hsl(${i * 120}, 70%, 50%)`,
+        speed: 1 + i * 0.2,
+      });
 
       const entityId = this.attentionSystem.addEntity(entity);
 
@@ -209,7 +208,7 @@ export class AttentionSplittingIntegration {
     }
 
     // Удаляем элементы сущностей
-    this.attentionSystem.getState().entities.forEach(entity => {
+    this.attentionSystem.getState().entities.forEach((entity) => {
       if (entity.element) {
         this.gameContainer.removeChild(entity.element);
       }

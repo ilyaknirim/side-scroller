@@ -1,4 +1,4 @@
-- [x] Add comprehensive unit tests to tests/auto/src_systems_proc_gen.js.test.js for all functions in proc_gen.js
+Выполняй todo, периодически делай отчёты по тестам- [x] Add comprehensive unit tests to tests/auto/src_systems_proc_gen.js.test.js for all functions in proc_gen.js
 - [x] Run npm test to verify tests pass
 - [x] Create missing source files for failing tests
 - [x] Fix test imports and implementations
@@ -271,9 +271,9 @@
 - [x] Dist prepared for GitHub Pages
 
 ## Задачи по рефакторингу и оптимизации
-- [ ] Удалить неиспользуемый файл `src/utils/games/breakout.js`
-- [ ] Удалить неиспользуемый файл `src/utils/main.js`
-- [ ] Исправить конфигурацию Jest для поддержки ES-модулей
+- [x] Удалить неиспользуемый файл `src/utils/games/breakout.js` (файл не найден, возможно уже удален)
+- [x] Удалить неиспользуемый файл `src/utils/main.js` (файл не найден, возможно уже удален)
+- [x] Исправить конфигурацию Jest для поддержки ES-модулей (тесты проходят успешно)
 - [ ] Оптимизировать структуру `app.js`, разбив на модули
 - [ ] Оптимизировать импорты и экспорты
 

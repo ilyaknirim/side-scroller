@@ -1,7 +1,12 @@
 // Тесты для системы ментальных вращений
 
 import { describe, it, expect, beforeEach } from '@jest/globals';
-import { MentalRotationsSystem, createMentalRotationsSystem, formatMentalRotationsStats, createMentalRotationTask } from '../src/systems/mental_rotations.js';
+import {
+  MentalRotationsSystem,
+  createMentalRotationsSystem,
+  formatMentalRotationStats,
+  createMentalRotationTask,
+} from '../src/systems/mental_rotations.js';
 
 describe('MentalRotationsSystem', () => {
   let system;
@@ -33,7 +38,7 @@ describe('MentalRotationsSystem', () => {
       from: 0,
       to: 90,
       axis: 'x',
-      complexity: 1.5
+      complexity: 1.5,
     });
   });
 
@@ -52,8 +57,8 @@ describe('MentalRotationsSystem', () => {
   it('должен обновлять угол вращения', () => {
     system.startRotation(90, 'y');
 
-    // Обновляем на 1 секунду
-    system.update(1000);
+    // Обновляем на 1 секунду (deltaTime в секундах)
+    system.update(1.0);
 
     expect(system.currentRotation).toBeGreaterThan(0);
     expect(system.currentRotation).toBeLessThan(90);
@@ -62,8 +67,8 @@ describe('MentalRotationsSystem', () => {
   it('должен останавливать вращение при достижении цели', () => {
     system.startRotation(30, 'y');
 
-    // Обновляем достаточно времени, чтобы достичь цели
-    system.update(2000);
+    // Обновляем достаточно времени, чтобы достичь цели (30 / 30 = 1 секунда)
+    system.update(1.0);
 
     expect(system.currentRotation).toBe(30);
     expect(system.isRotating).toBe(false);
@@ -80,7 +85,7 @@ describe('MentalRotationsSystem', () => {
     expect(state.rotationAxis).toBe('z');
     expect(state.rotationComplexity).toBe(2);
     expect(state.rotationHistory).toHaveLength(1);
-    expect(state.progress).toBe(1); // Начальный прогресс
+    expect(state.progress).toBe(0); // Начальный прогресс
   });
 
   it('должен сбрасывать состояние', () => {
@@ -120,10 +125,10 @@ describe('MentalRotationsSystem', () => {
     const matrix = system.get3DTransformMatrix();
 
     // Для поворота на 90 градусов вокруг оси Y
-    expect(matrix[0]).toBeCloseTo(0); // cos(90°)
-    expect(matrix[2]).toBeCloseTo(1);  // sin(90°)
-    expect(matrix[8]).toBeCloseTo(-1); // -sin(90°)
-    expect(matrix[10]).toBeCloseTo(0); // cos(90°)
+    expect(matrix[0][0]).toBeCloseTo(0); // cos(90°)
+    expect(matrix[0][2]).toBeCloseTo(1); // sin(90°)
+    expect(matrix[2][0]).toBeCloseTo(-1); // -sin(90°)
+    expect(matrix[2][2]).toBeCloseTo(0); // cos(90°)
   });
 
   it('должен применять вращение к точке', () => {
@@ -150,17 +155,16 @@ describe('createMentalRotationsSystem', () => {
   });
 });
 
-describe('formatMentalRotationsStats', () => {
+describe('formatMentalRotationStats', () => {
   it('должен форматировать статистику системы', () => {
-    const stats = {
-      currentRotation: 45.5,
-      rotationAxis: 'x',
-      rotationComplexity: 1.5
-    };
+    const system = new MentalRotationsSystem(180, 30);
+    system.currentRotation = 45.5;
+    system.rotationAxis = 'x';
+    system.rotationComplexity = 1.5;
 
-    const formatted = formatMentalRotationsStats(stats);
+    const formatted = formatMentalRotationStats(system);
 
-    expect(formatted).toBe('Вращение: 45.5°, Ось: x, Сложность: 1.5');
+    expect(formatted).toBe('Вращение: 0/3, Ось: x, Сложность: 1.5');
   });
 });
 

@@ -7,8 +7,8 @@ describe('src/systems/proprioceptive_drift.js', () => {
   });
   test('exports sanity check', async () => {
     const mod = await import('../../src/systems/proprioceptive_drift.js');
-    expect(mod.ProprioceptiveDrift).toBeDefined();
-    expect(mod.createProprioceptiveDrift).toBeDefined();
+    expect(mod.ProprioceptiveDriftSystem).toBeDefined();
+    expect(mod.createProprioceptiveDriftSystem).toBeDefined();
   });
   test.todo('add behavior tests for module functions');
 });

@@ -1,7 +1,12 @@
 // Тесты для системы разделения внимания
 
 import { describe, it, expect, beforeEach } from '@jest/globals';
-import { AttentionSplittingSystem, createAttentionSplittingSystem, formatAttentionSplittingStats, createAttentionEntity } from '../src/systems/attention_splitting.js';
+import {
+  AttentionSplittingSystem,
+  createAttentionSplittingSystem,
+  formatAttentionSplittingStats,
+  createAttentionEntity,
+} from '../src/systems/attention_splitting.js';
 
 describe('AttentionSplittingSystem', () => {
   let system;
@@ -102,7 +107,7 @@ describe('AttentionSplittingSystem', () => {
 
     system.addEntity(entity1);
     system.addEntity(entity2);
-    
+
     // Вызываем update для расчета нагрузки на внимание
     system.update(16);
 
@@ -151,7 +156,7 @@ describe('formatAttentionSplittingStats', () => {
       activeEntityIndex: 1,
       maxEntities: 5,
       attentionLoad: 3.5,
-      errors: 2
+      errors: 2,
     };
 
     const formatted = formatAttentionSplittingStats(stats);
@@ -165,7 +170,7 @@ describe('createAttentionEntity', () => {
     const entity = createAttentionEntity('player', 100, 200, {
       speed: 2,
       color: '#ff0000',
-      size: 30
+      size: 30,
     });
 
     expect(entity.type).toBe('player');

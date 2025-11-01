@@ -1,6 +1,10 @@
 // Интеграция системы ментальных вращений с игровой механикой
 
-import { createMentalRotationsSystem, createMentalRotationTask, formatMentalRotationsStats } from './mental_rotations.js';
+import {
+  createMentalRotationsSystem,
+  createMentalRotationTask,
+  formatMentalRotationsStats,
+} from './mental_rotations.js';
 
 // Класс для интеграции системы ментальных вращений в игру
 export class MentalRotationsIntegration {
@@ -88,7 +92,7 @@ export class MentalRotationsIntegration {
       keydown: (e) => {
         if (!this.currentTask) return;
 
-        switch(e.key) {
+        switch (e.key) {
           case 'ArrowLeft':
             this.mentalSystem.startRotation(
               this.mentalSystem.targetRotation - 15,
@@ -113,7 +117,7 @@ export class MentalRotationsIntegration {
             this.mentalSystem.rotationAxis = 'z';
             break;
         }
-      }
+      },
     };
 
     document.addEventListener('keydown', this.inputHandlers.keydown);
@@ -151,7 +155,7 @@ export class MentalRotationsIntegration {
   updateElementTransforms() {
     const transform = this.mentalSystem.getTransformMatrix();
 
-    this.transformedElements.forEach(element => {
+    this.transformedElements.forEach((element) => {
       element.style.transform = transform;
       element.style.transformStyle = 'preserve-3d';
       element.style.transition = 'transform 0.3s ease';
@@ -248,7 +252,7 @@ export class MentalRotationsIntegration {
     }
 
     // Сбрасываем преобразования элементов
-    this.transformedElements.forEach(element => {
+    this.transformedElements.forEach((element) => {
       element.style.transform = '';
     });
 
@@ -266,7 +270,7 @@ export class MentalRotationsIntegration {
     return {
       mentalSystem: this.mentalSystem.getState(),
       tasks: this.tasks,
-      currentTask: this.currentTask
+      currentTask: this.currentTask,
     };
   }
 }

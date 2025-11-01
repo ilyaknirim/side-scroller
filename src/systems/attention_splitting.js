@@ -1,88 +1,98 @@
-// Система разделения внимания - управление несколькими сущностями одновременно
+// Attention Splitting System - управление несколькими сущностями одновременно
+// Реализует когнитивную механику разделения внимания
 
-// Класс для системы разделения внимания
 export class AttentionSplittingSystem {
   constructor(maxEntities = 3, difficulty = 1) {
+    this.entities = [];
     this.maxEntities = maxEntities;
     this.difficulty = difficulty;
-    this.entities = [];
     this.activeEntityIndex = 0;
     this.attentionLoad = 0;
     this.errors = 0;
     this.switchCooldown = 0;
   }
 
-  // Добавление сущности для управления
+  // Добавить сущность для управления
   addEntity(entity) {
-    if (this.entities.length < this.maxEntities) {
-      this.entities.push({
-        ...entity,
-        id: this.entities.length,
-        isActive: this.entities.length === 0
-      });
-      return this.entities.length - 1;
+    if (this.entities.length >= this.maxEntities) {
+      return -1; // Maximum entities reached
     }
-    return -1;
+
+    const newEntity = {
+      ...entity,
+      isActive: this.entities.length === 0, // First entity is active
+    };
+
+    this.entities.push(newEntity);
+    this.updateAttentionLoad();
+    return this.entities.length - 1; // Return index
   }
 
-  // Переключение активной сущности
+  // Переключить активную сущность
   switchActiveEntity(index) {
+    if (index < 0 || index >= this.entities.length) {
+      this.errors++;
+      return false;
+    }
+
     if (this.switchCooldown > 0) {
       this.errors++;
       return false;
     }
 
-    if (index >= 0 && index < this.entities.length) {
-      // Деактивируем текущую сущность
+    // Deactivate current active entity
+    if (this.entities[this.activeEntityIndex]) {
       this.entities[this.activeEntityIndex].isActive = false;
-
-      // Активируем новую сущность
-      this.activeEntityIndex = index;
-      this.entities[index].isActive = true;
-
-      // Устанавливаем время перезарядки переключения
-      this.switchCooldown = Math.max(5, 15 - this.difficulty * 2);
-
-      return true;
     }
 
-    this.errors++;
-    return false;
+    // Activate new entity
+    this.activeEntityIndex = index;
+    this.entities[index].isActive = true;
+
+    // Set cooldown
+    this.switchCooldown = 500; // 500ms cooldown
+
+    return true;
   }
 
-  // Обновление состояния системы
+  // Обновить систему (вызывать каждый кадр)
   update(deltaTime) {
-    // Уменьшаем время перезарядки переключения
+    // Update switch cooldown
     if (this.switchCooldown > 0) {
-      this.switchCooldown = Math.max(0, this.switchCooldown - deltaTime);
+      this.switchCooldown -= deltaTime;
+      if (this.switchCooldown < 0) this.switchCooldown = 0;
     }
 
-    // Рассчитываем нагрузку на внимание
-    this.attentionLoad = this.entities.length * this.difficulty;
-
-    // Обновляем все сущности
-    this.entities.forEach(entity => {
-      if (typeof entity.update === 'function') {
+    // Update entities
+    this.entities.forEach((entity, index) => {
+      if (entity.update) {
         entity.update(deltaTime, entity.isActive);
       }
     });
+
+    this.updateAttentionLoad();
   }
 
-  // Получение текущего состояния
+  // Обновить нагрузку внимания
+  updateAttentionLoad() {
+    this.attentionLoad = this.entities.length * this.difficulty;
+  }
+
+  // Получить состояние системы
   getState() {
     return {
-      entities: [...this.entities],
+      entities: this.entities,
       activeEntityIndex: this.activeEntityIndex,
       maxEntities: this.maxEntities,
       attentionLoad: this.attentionLoad,
       difficulty: this.difficulty,
       errors: this.errors,
       switchCooldown: this.switchCooldown,
-      canSwitch: this.switchCooldown === 0
+      canSwitch: this.switchCooldown <= 0,
     };
   }
 
-  // Сброс системы
+  // Сбросить систему
   reset() {
     this.entities = [];
     this.activeEntityIndex = 0;
@@ -92,39 +102,32 @@ export class AttentionSplittingSystem {
   }
 }
 
-// Функция для создания системы разделения внимания
-export function createAttentionSplittingSystem(maxEntities, difficulty) {
+// Функция создания системы разделения внимания
+export function createAttentionSplittingSystem(maxEntities = 3, difficulty = 1) {
   return new AttentionSplittingSystem(maxEntities, difficulty);
 }
 
-// Функция для форматирования статистики разделения внимания
+// Форматирование статистики системы разделения внимания
 export function formatAttentionSplittingStats(stats) {
-  return `Entities: ${stats.entities.length}/${stats.maxEntities}, Active: ${stats.activeEntityIndex}, Load: ${stats.attentionLoad.toFixed(1)}, Errors: ${stats.errors}`;
+  return `Entities: ${stats.entities.length}/${stats.maxEntities}, Active: ${stats.activeEntityIndex}, Load: ${stats.attentionLoad}, Errors: ${stats.errors}`;
 }
 
-// Функция для создания типичной сущности для разделения внимания
-export function createAttentionEntity(type, x, y, config = {}) {
-  const defaultConfig = {
-    speed: 1,
-    color: '#ffffff',
-    size: 20
-  };
-
-  return {
+// Создать сущность для управления
+export function createAttentionEntity(type, x, y, options = {}) {
+  const entity = {
     type,
     x,
     y,
-    ...defaultConfig,
-    ...config,
-    update: function(deltaTime, isActive) {
-      // Базовая логика обновления сущности
+    speed: options.speed || 1,
+    color: options.color || '#ffffff',
+    size: options.size || 20,
+    update(deltaTime, isActive) {
+      // Simple update logic
       if (isActive) {
-        // Логика активной сущности
-        this.lastActive = Date.now();
-      } else {
-        // Логика неактивной сущности
-        // Например, замедление или автоматическое движение
+        // Active entity moves faster or something
       }
-    }
+    },
   };
+
+  return entity;
 }

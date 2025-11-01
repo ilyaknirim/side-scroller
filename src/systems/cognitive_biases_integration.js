@@ -1,6 +1,10 @@
 // Интеграция системы когнитивных искажений с игровой механикой
 
-import { createCognitiveBiasesSystem, createBiasedPlatform, formatCognitiveBiasesStats } from './cognitive_biases.js';
+import {
+  createCognitiveBiasesSystem,
+  createBiasedPlatform,
+  formatCognitiveBiasesStats,
+} from './cognitive_biases.js';
 
 // Класс для интеграции системы когнитивных искажений в игру
 export class CognitiveBiasesIntegration {
@@ -66,7 +70,14 @@ export class CognitiveBiasesIntegration {
 
   // Генерация новой платформы
   generatePlatform() {
-    const biasTypes = ['confirmation', 'negativity', 'availability', 'anchoring', 'illusory', 'bandwagon'];
+    const biasTypes = [
+      'confirmation',
+      'negativity',
+      'availability',
+      'anchoring',
+      'illusory',
+      'bandwagon',
+    ];
     const biasType = biasTypes[Math.floor(Math.random() * biasTypes.length)];
     const strength = 0.5 + Math.random() * 1.5;
 
@@ -133,12 +144,12 @@ export class CognitiveBiasesIntegration {
   // Получение метки для типа искажения
   getBiasTypeLabel(type) {
     const labels = {
-      'confirmation': 'Подтверждение',
-      'negativity': 'Негатив',
-      'availability': 'Доступность',
-      'anchoring': 'Якорь',
-      'illusory': 'Иллюзия',
-      'bandwagon': 'Толпа'
+      confirmation: 'Подтверждение',
+      negativity: 'Негатив',
+      availability: 'Доступность',
+      anchoring: 'Якорь',
+      illusory: 'Иллюзия',
+      bandwagon: 'Толпа',
     };
 
     return labels[type] || 'Неизвестно';
@@ -178,8 +189,10 @@ export class CognitiveBiasesIntegration {
 
   // Обновление визуальных элементов платформ
   updatePlatformElements(state) {
-    state.biases.forEach(bias => {
-      const platform = this.biasesSystem.biases.find(b => b.platform.id === bias.platformId)?.platform;
+    state.biases.forEach((bias) => {
+      const platform = this.biasesSystem.biases.find(
+        (b) => b.platform.id === bias.platformId
+      )?.platform;
 
       if (platform && platform.element) {
         // Обновляем позицию
@@ -213,7 +226,7 @@ export class CognitiveBiasesIntegration {
     this.biasesInfo.textContent = formatCognitiveBiasesStats(state);
 
     // Скрываем индикатор наблюдения, если ни одна платформа не наблюдается
-    const hasObserved = state.biases.some(bias => bias.isObserved);
+    const hasObserved = state.biases.some((bias) => bias.isObserved);
     if (!hasObserved) {
       this.observationIndicator.style.display = 'none';
     }
@@ -231,7 +244,7 @@ export class CognitiveBiasesIntegration {
     }
 
     // Удаляем элементы платформ
-    this.platformElements.forEach(element => {
+    this.platformElements.forEach((element) => {
       if (element.parentNode) {
         element.parentNode.removeChild(element);
       }
